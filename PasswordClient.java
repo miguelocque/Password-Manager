@@ -24,7 +24,7 @@ public class PasswordClient {
                 // "Store New Username/Password for Specific Account"
                 case 1:
 
-                
+
                 // "Search for Existing Password with Account Type and Username"
                 case 2:
 
@@ -57,9 +57,9 @@ public class PasswordClient {
         }
 
         // ask the user if they want to save accounts to a file
-        System.out.println("Would you like to Save your Accounts to a File? (y/n)");
+        System.out.print("Would you like to Save your Accounts to a File? (y/n) ");
 
-        String choice = scanner.nextLine();
+        String choice = scanner.next();
 
         if (choice.equals("y")) {
             // save file process
