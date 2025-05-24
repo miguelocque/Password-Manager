@@ -21,16 +21,27 @@ public class PasswordClient {
             int input = scanner.nextInt();
 
             switch(input) {
+                // "Store New Username/Password for Specific Account"
                 case 1:
 
+                
+                // "Search for Existing Password with Account Type and Username"
                 case 2:
 
+
+                // "List out All Saved Usernames and Passwords for a Specific Account Type"
                 case 3:
                 
+
+                // "Delete Specific Username and Password from an Account"
                 case 4:
 
+
+                // "Erase all Accounts Created for a Specific Account Type"
                 case 5:
 
+
+                // "Quit"
                 case 6:
                     break;
                 
@@ -38,7 +49,7 @@ public class PasswordClient {
                     System.out.println("Invalid Input. Please Select a Valid Option.");
             }
 
-
+            // checking if we have our quit command
             if (input == 6) {
                 break;
             }
