@@ -74,7 +74,7 @@ public class Password {
         // then we look in the position and see if there's anything there to begin with
         // we also want to check if the position is 'removed' - there used to be a password that
         // we chose to delete
-        if (table[position] == null || (table[position].username == null && table[position].next == null)) {
+        if (table[position] == null || table[position].account_type == null && (table[position].username == null && table[position].next == null)) {
             // we can simply point the position to the new node we create
             Node newAccount = new Node(acct, usrnm, pswrd);
             table[position] = newAccount;
