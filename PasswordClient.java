@@ -7,6 +7,9 @@ public class PasswordClient {
     // file
     public static void main(String args[]) {
 
+        // instance of a Password class
+        Password newAccountsWithPasswords = new Password();
+
         // a scanner to detect user input
         Scanner scanner = new Scanner(System.in);
 
@@ -23,6 +26,30 @@ public class PasswordClient {
             switch(input) {
                 // "Store New Username/Password for Specific Account"
                 case 1:
+                    // get the account type
+                    System.out.print("What account are you saving? ");
+                    String acct = scanner.nextLine();
+                    System.out.println();
+
+                    // get the username
+                    System.out.print("Please type your username: ");
+                    String user = scanner.nextLine();
+                    System.out.println();
+
+                    // get the password
+                    System.out.print("Please enter your Password (must be at least 8 characters long): ");
+                    String pass = scanner.nextLine();
+                    while (pass.length() < 8) {
+                        System.out.print("Password must be at least 8 characters long. Try again: ");
+                        pass = scanner.nextLine();
+                        System.out.println();
+                    }
+                    System.out.println();
+
+                    // here we want to call a method to encrypt the password before saving it.
+
+                    // now we can store it
+                    newAccountsWithPasswords.createAccount(acct, user, pass);
 
 
                 // "Search for Existing Password with Account Type and Username"

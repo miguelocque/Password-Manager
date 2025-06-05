@@ -14,6 +14,7 @@
 
 import java.util.*;
 import java.util.Random;
+import java.util.Scanner;
 
 
 
@@ -23,6 +24,9 @@ public class Password {
 
     //  a global variable that initializes our hash table to fit 50 different accounts
     private final int DEFAULT_NUM_PASSWORDS = 50;
+
+    // a scanner to detect user input
+    Scanner scanner = new Scanner(System.in);
 
     // a Node class that will contain all the fields of a Linked Password Node
     private class Node {
@@ -52,13 +56,13 @@ public class Password {
     // hash table with a set size
     private Node[] table = new Node[DEFAULT_NUM_PASSWORDS];
 
-    // total number of passwords and accounts we've added to the hash table; updates within methods
+    // total number of accounts we've added to the hash table; updates within methods
     private int numKeys; 
 
     // Password needs a constructor, set the numKeys to 0 since we haven't added anything
     public Password () {
 
-        // the numkeys tells us how many passwords we have (0 at construction)
+        // the numkeys tells us how many accounts we have (0 at construction)
         numKeys = 0;
     }
 
@@ -66,19 +70,29 @@ public class Password {
 
     // **************************** CORRECT ABOVE THESE LINES ********************************
 
+    // wrapper method to call the private method 
+    public void createAccount(String acct, String usrnm, Object pswrd) {
+        insertPass(acct, usrnm, pswrd);
+    }
+
     // method that will be called whenever a new password wants to be inserted
-    public boolean insertPass(String acct, String usrnm, Object pswrd) {
-        // first we get the hash value of the username
+    private boolean insertPass(String acct, String usrnm, Object pswrd) {
+        // first we get the hash value of the account type
         int position = h1(acct);
 
         // then we look in the position and see if there's anything there to begin with
-        // we also want to check if the position is 'removed' - there used to be a password that
-        // we chose to delete
-        if (table[position] == null || table[position].account_type == null && (table[position].username == null && table[position].next == null)) {
+        // we also want to check if the position is 'removed' - there used to be an account that we chose to delete
+        if (table[position] == null || (table[position].account_type == null && table[position].username == null && table[position].next == null)) {
             // we can simply point the position to the new node we create
             Node newAccount = new Node(acct, usrnm, pswrd);
             table[position] = newAccount;
             numKeys++;
+
+            //confirmation message
+            System.out.print("Saved Username/Password for the ");
+            System.out.print(acct);
+            System.out.print(" account!");
+            System.out.println();
         }
         else { // otherwise, there's something at the position, we must look for duplicates
 
@@ -103,11 +117,81 @@ public class Password {
 
                 // update numKeys
                 numKeys++;
+
+                //confirmation message
+                System.out.print("Saved Username/Password for the ");
+                System.out.print(acct);
+                System.out.print(" account!");
+                System.out.println();
             }
 
             // ** CHECK IF THE ACCT EQUALS BUT NOT THE USERNAME AND VICE VERSA
+            else if (trav.username.equals(usrnm) && !trav.account_type.equals(acct)) {
+                // here we have the case where the username equals but not the account, meaning we have to make a complete new Node
+                Node newAccount = new Node(acct, usrnm, pswrd);
 
-            else {  // otherwise, there is a duplicate, and trav is pointing to it
+                // add the new account to the front of the list; it's fine to edit trav since we're gonna exit the conditional
+                trav = table[position];
+                newAccount.next = trav;
+                trav = newAccount;
+
+                // ** we DO update numKeys because we're creating a new account **
+                numKeys++;
+
+                //confirmation message
+                System.out.print("Saved Username/Password for the ");
+                System.out.print(acct);
+                System.out.print(" account!");
+                System.out.println();
+            }
+
+            else if (!trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
+                // here we have the case where the username doesn't match the already existing account with a username, 
+                // so we have to ask if they meant the existing username
+                System.out.print("Did you mean this existing username? - ");
+                System.out.print(trav.username);
+                System.out.print(" (y/n) - ");
+                String correctUsername = scanner.nextLine();
+
+                if (correctUsername.equals("y") || correctUsername.equals("Y")) {
+                    // in this case we know that the user meant the existing username, so we simply insert the password into 
+                    // the current LLQueue of passwords for the current account that trav is pointing to
+                    trav.PassValues.insert(pswrd);
+
+                    //confirmation message
+                    System.out.print("Password for the ");
+                    System.out.print(acct);
+                    System.out.print(" account with username ");
+                    System.out.print(usrnm);
+                    System.out.print(" was saved.");
+                    System.out.println();
+
+                    // ** we DONT update numKeys because we're inserting an additional password to an already existing key **
+                }
+
+                else { // otherwise, they meant a different username, so we can make a new Node and place it at the front of the list
+                    Node newAccount = new Node(acct, usrnm, pswrd);
+
+                    // add the new account to the front of the list; it's fine to edit trav since we're gonna exit the conditional
+                    trav = table[position];
+                    newAccount.next = trav;
+                    trav = newAccount;
+
+                    // ** we DO update numKeys because we're creating a new account **
+                    numKeys++;
+
+                    //confirmation message
+                    System.out.print("Saved new Username and Password for the ");
+                    System.out.print(acct);
+                    System.out.print(" account!");
+                    System.out.println();
+                }
+
+            }
+
+            else {  // otherwise, there is a duplicate (both account type and username), and trav is pointing to it
+            
+                // thus we simply insert the new password into the queue
                 trav.PassValues.insert(pswrd);
 
                 // ** we DONT update numKeys because we're inserting an additional password to an already existing key **
