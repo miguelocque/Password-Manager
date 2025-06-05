@@ -22,6 +22,8 @@ public class PasswordClient {
             // ask the user for a selection with an int
             System.out.print("Please select your option from the list: ");
             int input = scanner.nextInt();
+            scanner.nextLine(); // this gets rid of the invisible newline
+            System.out.println();
 
             switch(input) {
                 // "Store New Username/Password for Specific Account"
@@ -39,6 +41,7 @@ public class PasswordClient {
                     // get the password
                     System.out.print("Please enter your Password (must be at least 8 characters long): ");
                     String pass = scanner.nextLine();
+
                     while (pass.length() < 8) {
                         System.out.print("Password must be at least 8 characters long. Try again: ");
                         pass = scanner.nextLine();
@@ -100,6 +103,7 @@ public class PasswordClient {
 
     // method that lists the menu options for the user
     public static void printMenu() {
+        System.out.println();
         System.out.println("------- Password Manager -------");
         System.out.println();
         System.out.println("1. Store New Username/Password for Specific Account");
