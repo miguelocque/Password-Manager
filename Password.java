@@ -125,7 +125,6 @@ public class Password {
                 System.out.println();
             }
 
-            // ** CHECK IF THE ACCT EQUALS BUT NOT THE USERNAME AND VICE VERSA
             else if (trav.username.equals(usrnm) && !trav.account_type.equals(acct)) {
                 // here we have the case where the username equals but not the account, meaning we have to make a complete new Node
                 Node newAccount = new Node(acct, usrnm, pswrd);
@@ -154,18 +153,32 @@ public class Password {
                 String correctUsername = scanner.nextLine();
 
                 if (correctUsername.equals("y") || correctUsername.equals("Y")) {
-                    // in this case we know that the user meant the existing username, so we simply insert the password into 
-                    // the current LLQueue of passwords for the current account that trav is pointing to
-                    trav.PassValues.insert(pswrd);
+                    // in this case we know that the user meant the existing username
 
-                    //confirmation message
-                    System.out.print("Password for the ");
-                    System.out.print(acct);
-                    System.out.print(" account with username ");
-                    System.out.print(usrnm);
-                    System.out.print(" was saved.");
-                    System.out.println();
+                    // first we check if the password already exists in this queue
+                    // if we got null back from the searcher method, that means the password does not exist and we can insert
+                    if (findPassInUsername(usrnm, pswrd) == null) {
+                        trav.PassValues.insert(pswrd);
 
+                        //confirmation message for the insert
+                        System.out.print("Password for the ");
+                        System.out.print(acct);
+                        System.out.print(" account with username ");
+                        System.out.print(usrnm);
+                        System.out.print(" was saved!");
+                        System.out.println();
+                    }
+
+                    else {
+                        //confirmation message for the already existing password
+                        System.out.print("Password for the ");
+                        System.out.print(acct);
+                        System.out.print(" account with username ");
+                        System.out.print(usrnm);
+                        System.out.print(" already exists.");
+                        System.out.println();
+                    }
+                    
                     // ** we DONT update numKeys because we're inserting an additional password to an already existing key **
                 }
 
@@ -191,8 +204,28 @@ public class Password {
 
             else {  // otherwise, there is a duplicate (both account type and username), and trav is pointing to it
             
-                // thus we simply insert the new password into the queue
-                trav.PassValues.insert(pswrd);
+                // thus we simply check if the password already exists and insert accordingly
+                if (findPassInUsername(usrnm, pswrd) == null) {
+                    trav.PassValues.insert(pswrd);
+
+                    //confirmation message for the insert
+                    System.out.print("Password for the ");
+                    System.out.print(acct);
+                    System.out.print(" account with username ");
+                    System.out.print(usrnm);
+                    System.out.print(" was saved!");
+                    System.out.println();
+                }
+
+                else {
+                    //confirmation message for the already existing password
+                    System.out.print("Password for the ");
+                    System.out.print(acct);
+                    System.out.print(" account with username ");
+                    System.out.print(usrnm);
+                    System.out.print(" already exists.");
+                    System.out.println();
+                }
 
                 // ** we DONT update numKeys because we're inserting an additional password to an already existing key **
             }
@@ -218,7 +251,7 @@ public class Password {
     }
 
     // search method
-    public Object findPassInUsername(Object usrnm, Object pswrd) {
+    private Object findPassInUsername(Object usrnm, Object pswrd) {
         // get the hash value of the username
         int position = h1(usrnm);
 
@@ -227,6 +260,9 @@ public class Password {
 
         // make an extra queue to go through the linked list passwords
         LLQueue<Object> passSearch = new LLQueue<Object>();
+
+        // an additional holder variable to store null to check if we have the correct password to return at the end
+        Object foundPass = null;
 
         // go through the linked list, and empty the LLqueue in a nested loop, by pushing it onto a different queue
         // then back to the original queue
@@ -238,7 +274,7 @@ public class Password {
                 
                 // if the password we got is the password we're looking for, so we return it
                 if (holder.equals(pswrd)) {
-                    return holder;
+                    foundPass = holder;
                 }
 
                 // insert the password into the temp queue
@@ -247,7 +283,7 @@ public class Password {
             }
             // one more while loop to reset the queue
             while (!passSearch.isEmpty()) {
-                // get the first item in the queue
+                // get the first item in the NEW queue
                 Object movePassBack = passSearch.remove();
 
                 // place the password back into original queue
@@ -259,11 +295,13 @@ public class Password {
 
         } 
 
-        // if we're here, we never found the password we wanted
-        return null;
+        // we return 'foundPass' which should either have the correct password or null
+        return foundPass;
     }
 
-    // retrieve passwords from one username into an array
+    // encrypt method
+
+    // method to retrieve passwords from one username into an array
 
     // 
 
