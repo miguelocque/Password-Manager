@@ -319,7 +319,7 @@ public class Password {
         return new SecretKeySpec(key, "AES");                           
     }
 
-    public static String encrypt(String pass, String pin) {
+    public String encrypt(String pass, String pin) {
         try {
             // obtains the correct derived key utilizing the given pin
             SecretKeySpec key = deriveKeyFromPIN(pin);
@@ -341,7 +341,7 @@ public class Password {
         }
     }
 
-    public static String decrypt(String encryptedText, String pin) {
+    public String decrypt(String encryptedText, String pin) {
         try {
             // use our pin to derive the correct key
             SecretKeySpec key = deriveKeyFromPIN(pin);
