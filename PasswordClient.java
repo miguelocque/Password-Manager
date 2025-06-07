@@ -1,10 +1,15 @@
 // Miguel Ocque - mocque@bu.edu
 
 import java.util.Scanner;
+import java.io.*;
 
 public class PasswordClient {
-    // a wrapper file that will run the initial call to the methods in the Password.java
-    // file
+    // a wrapper file that will run the initial call to the methods in the Password.java file
+
+    // a final check file and string for our PIN validation
+    private static final String FILE_NAME = "vault.check";
+    private static final String CHECK_STRING = "check";
+
     public static void main(String args[]) {
 
         // instance of a Password class
@@ -13,6 +18,94 @@ public class PasswordClient {
         // a scanner to detect user input
         Scanner scanner = new Scanner(System.in);
 
+        // we're seeing if the PIN has been created or not
+        if (!new File(FILE_NAME).exists()) {
+            // getting the new PIN from the user
+            System.out.print("Please enter your new 4-Digit PIN: ");
+            String newPin = getValidPIN(scanner);
+
+            // now we can encrypt the check using that pin
+            String encryptedChecker = newAccountsWithPasswords.encrypt(CHECK_STRING, newPin);
+
+            // and we save that string to a file
+            writeToFile(FILE_NAME, encryptedChecker);
+
+            // after which we can proceed to the CLI
+            Manager(scanner, newAccountsWithPasswords, newPin);
+
+        }
+        else { // if we're here, that means a PIN exists and we must ask the user for it
+            System.out.print("Enter your 4 digit PIN to unlock your Password Manager: ");
+            String enteredPin = getValidPIN(scanner);
+
+            // read the encrypted check password from the file 
+            String encryptedCheck = readFromFile(FILE_NAME);
+
+            // decrypt the string with the entered PIN
+            String decryptCheck = newAccountsWithPasswords.decrypt(encryptedCheck, enteredPin);
+
+            // and we check to see if the decrypted string matches
+            if (CHECK_STRING.equals(decryptCheck)) {
+                System.out.println("Access Granted. Welcome to your Password Manager!");
+                Manager(scanner, newAccountsWithPasswords, enteredPin);
+            }
+            else { 
+                System.out.println("Incorrect PIN. Try again later.");
+                return;
+            }
+
+        }
+
+
+        // once we're out we Quit, so we must close scanner
+        scanner.close();
+    }
+
+    // method that writes to a file
+    private static void writeToFile(String filename, String content) {
+        try {
+            FileWriter writer = new FileWriter(filename);
+            writer.write(content);
+            writer.close();
+        } catch (Exception e) {
+            System.err.println("I/O Error: " + e.getMessage());
+        }
+        
+    }
+
+    // method that reads from a file
+    private static String readFromFile(String filename) {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            String content = reader.readLine();
+            reader.close();
+            return content;
+        } catch (Exception e) {
+            System.err.println("I/O Error: " + e.getMessage());
+            return null;
+        }
+        
+    }
+
+    // method to obtain a PIN from the user
+    private static String getValidPIN(Scanner scanner) {
+        String pin;
+        while (true) {
+            // gets user input
+            pin = scanner.nextLine();
+            // checking to see if the entered PIN is 4 digits and there are no characters
+            if (pin.matches("\\d{4}")) {
+                // if it does we can return it
+                return pin;
+            }
+            else { // if not we ask the user for another correct PIN
+                System.out.println("Invalid PIN. Please enter a 4 digit PIN: ");
+            }
+        }
+    }
+
+    // method that runs the Password Manager
+    public static void Manager(Scanner scanner, Password newAccountsWithPasswords, String pin) {
         // a while loop that continually runs if the user doesn't select the 'Quit' option
         while (true) {
 
@@ -50,6 +143,7 @@ public class PasswordClient {
                     System.out.println();
 
                     // here we want to call a method to encrypt the password before saving it.
+                    newAccountsWithPasswords.encrypt(pass, pin);
 
                     // now we can store it
                     newAccountsWithPasswords.createAccount(acct, user, pass);
@@ -95,10 +189,6 @@ public class PasswordClient {
             // save file process
         }
         // if it's not a yes, there's no need to check, we can just quit.
-
-
-        // once we're out we Quit, so we must close scanner
-        scanner.close();
     }
 
     // method that lists the menu options for the user
