@@ -99,7 +99,7 @@ public class PasswordClient {
                 return pin;
             }
             else { // if not we ask the user for another correct PIN
-                System.out.println("Invalid PIN. Please enter a 4 digit PIN: ");
+                System.out.print("Invalid PIN. Please enter a 4 digit PIN: ");
             }
         }
     }
