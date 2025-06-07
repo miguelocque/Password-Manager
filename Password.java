@@ -13,9 +13,15 @@
  */
 
 import java.util.*;
-import java.util.Random;
 import java.util.Scanner;
 
+// encryption imports
+
+import javax.crypto.Cipher;                  // Core encryption engine
+import javax.crypto.spec.SecretKeySpec;      // Allows us to build a key object from bytes
+import java.security.MessageDigest;          // Used for SHA-256 hashing of the PIN
+import java.util.Arrays;                     // For trimming the hashed key to 16 bytes
+import java.util.Base64;                     // Lets us turn binary into printable string
 
 
 public class Password {
@@ -292,14 +298,73 @@ public class Password {
 
             // move trav to the next value
             trav = trav.next;
-
         } 
 
         // we return 'foundPass' which should either have the correct password or null
         return foundPass;
     }
 
-    // encrypt method
+    // encrypt methods 
+    private static SecretKeySpec deriveKeyFromPIN(String pin) throws Exception {
+        // Obtains the "Secure Hash Algorithm" (SHA-256) 
+        MessageDigest sha = MessageDigest.getInstance("SHA-256");
+
+         // Hash the PIN into 32 bytes
+        byte[] hashed = sha.digest(pin.getBytes("UTF-8"));
+
+        // Use the first 16 bytes (128 bits)
+        byte[] key = Arrays.copyOf(hashed, 16);
+
+        // Wrap it into a key object that is then returned to the correct object to be utilized in the encrypt method
+        return new SecretKeySpec(key, "AES");                           
+    }
+
+    public static String encrypt(String pass, String pin) {
+        try {
+            // obtains the correct derived key utilizing the given pin
+            SecretKeySpec key = deriveKeyFromPIN(pin);
+
+            // the encryptor method using "Advanced Encryption Standard" (AES)
+            Cipher cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+
+            // this encrypts our passed in password
+            byte[] encrypted = cipher.doFinal(pass.getBytes("UTF-8"));
+
+            // turns and returns our encrypted password into a readable string
+            return Base64.getEncoder().encodeToString(encrypted);            
+        } catch (Exception e) {
+
+            // error handler
+            System.err.println("Encryption error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public static String decrypt(String encryptedText, String pin) {
+        try {
+            // use our pin to derive the correct key
+            SecretKeySpec key = deriveKeyFromPIN(pin);
+
+            // getting the AES encryption method 
+            Cipher cipher = Cipher.getInstance("AES");
+
+            // we are now DECRYPTING, not ENCRYPTING
+            cipher.init(Cipher.DECRYPT_MODE, key);
+
+            // decodes our string into bytes so that the AES algorithm can decrypt using matrices
+            byte[] decoded = Base64.getDecoder().decode(encryptedText);      
+            byte[] decrypted = cipher.doFinal(decoded);                      
+            
+            // returns a String that should be the correct decrypted password
+            return new String(decrypted, "UTF-8");
+        } catch (Exception e) {
+            System.err.println("Decryption error: " + e.getMessage());
+            return null;
+        }
+    }
+
+
 
     // method to retrieve passwords from one username into an array
 
