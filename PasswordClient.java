@@ -143,7 +143,7 @@ public class PasswordClient {
                     System.out.println();
 
                     // here we want to call a method to encrypt the password before saving it.
-                    newAccountsWithPasswords.encrypt(pass, pin);
+                    pass = newAccountsWithPasswords.encrypt(pass, pin);
 
                     // now we can store it
                     newAccountsWithPasswords.createAccount(acct, user, pass);
@@ -185,7 +185,7 @@ public class PasswordClient {
 
         String choice = scanner.next();
 
-        if (choice.equals("y")) {
+        if (choice.equals("y") || choice.equals("Y")) {
             // save file process
         }
         // if it's not a yes, there's no need to check, we can just quit.
