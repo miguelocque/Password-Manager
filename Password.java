@@ -242,18 +242,32 @@ public class Password {
     }
 
     // delete method
-    public boolean deletePass(String acct, String usrnm, Object pswrdToDelete) {
+    public Object deletePass(String acct, String usrnm, Object pswrdToDelete) {
         // get the hash value of the username
         int position = h1(acct);
 
         // make a trav Node so that we can go through the linked list
         Node trav = table[position];
 
-        // 
+        // now we go through the linked list until our account and username match or we reach the end
+        while ((!trav.username.equals(usrnm) && !trav.account_type.equals(acct)) && trav != null) {
+            trav = trav.next;
+        }
+        
+        // if we reach the end of the list and trav is null, that means we can't find an account/username under which the password
+        // is located
+        if (trav == null) {
+            // so we can return null and an error message
+            System.out.println("Account not found. Could not delete password. Try again.");
+            return null;
+        }
 
+        // if we don't go into the if statement, that means we have a match; we must go through the passwords until we 
+        // find the correct one; we can call findPassInUsername
+        Object passToDelete = findPassInUsername(usrnm, pswrdToDelete);
 
-        // temporary
-        return true;
+        return passToDelete;
+
     }
 
     // search method
