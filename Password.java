@@ -263,8 +263,8 @@ public class Password {
         }
 
         // if we don't go into the if statement, that means we have a match; we must go through the passwords until we 
-        // find the correct one; we can call findPassInUsername
-        Object passToDelete = findPassInUsername(usrnm, pswrdToDelete);
+        // find the correct one and proceed to delete it
+        Object passToDelete = null;
 
         return passToDelete;
 
