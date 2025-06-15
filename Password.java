@@ -316,7 +316,7 @@ public class Password {
 
     }
 
-    // search method -- ** COMPLETED ** 
+    // search method -- ** TODO ** 
     private Object findPassInUsername(Object usrnm, Object pswrd) {
         // get the hash value of the username
         int position = h1(usrnm);
