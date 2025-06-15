@@ -262,15 +262,61 @@ public class Password {
             return null;
         }
 
-        // if we don't go into the if statement, that means we have a match; we must go through the passwords until we 
+        // if we don't go into the if statement, that means we have a match; 
+
+        // first we should check to see if the current list is empty, implying that no passwords even exist for this account/username
+        if (trav.PassValues.isEmpty()) {
+            // if we go into here, that means that we have no passwords. Return null and an error message
+            System.out.println("Account found. No Passwords Exist.");
+            return null;
+        }
+        
+        // if we're here that means we have password(s) saved.
+        // we must go through the password(s) until we 
         // find the correct one and proceed to delete it
         Object passToDelete = null;
 
+        // holder object for passwords in queue
+        Object holder = null;
+
+        // create an additional LLQueue so that we can insert everything EXCEPT the password to delete
+        LLQueue<Object> newPassList = new LLQueue<Object>();
+
+        // while the current LLqueue of passwords 
+        while (!trav.PassValues.isEmpty()) {
+            // insert the first password in the queue into the other as long as it's not the password we delete
+            holder = trav.PassValues.remove();
+
+            if (holder != pswrdToDelete) {
+                // if the current password in the queue is not what we're looking for
+                // insert into queue 
+                newPassList.insert(holder);
+
+            }
+            else if (holder == pswrdToDelete && passToDelete != null) {
+                // this case is to check for duplicate passwords; we can only delete one password at a time, so let's say that
+                System.out.println("Found password more than once. Deleting only the first found password.");
+                
+                // and we continue the loop
+            }
+            else {
+                // this case matches the password, and passToDelete is null so we know we found our password we want to delete
+
+                // holder currently holds the removed password, so we don't insert into the new queue, but we update passToDelete
+                passToDelete = holder;
+
+                // and continue through the loop
+            }
+            
+
+        }
+
+        // at the end we return whatever is in passToDelete
         return passToDelete;
 
     }
 
-    // search method
+    // search method -- ** COMPLETED ** 
     private Object findPassInUsername(Object usrnm, Object pswrd) {
         // get the hash value of the username
         int position = h1(usrnm);
@@ -317,6 +363,8 @@ public class Password {
         // we return 'foundPass' which should either have the correct password or null
         return foundPass;
     }
+
+    // **************************** CORRECT BELOW THESE LINES *******************************
 
     // encrypt methods 
     private static SecretKeySpec deriveKeyFromPIN(String pin) throws Exception {
@@ -378,6 +426,7 @@ public class Password {
         }
     }
 
+    // **************************** CORRECT ABOVE THESE LINES ********************************
 
 
     // method to retrieve passwords from one username into an array
