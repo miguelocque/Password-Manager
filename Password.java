@@ -311,6 +311,8 @@ public class Password {
 
         }
 
+        // return the original linked list to its form without the password we 'deleted' - ** TODO **
+
         // at the end we return whatever is in passToDelete
         return passToDelete;
 
@@ -429,7 +431,7 @@ public class Password {
     // **************************** CORRECT ABOVE THESE LINES ********************************
 
 
-    // method to retrieve passwords from one username into an array
+    // method to retrieve passwords from one username into an array - ** TODO **
 
     // 
 
