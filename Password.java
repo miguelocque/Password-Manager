@@ -282,7 +282,7 @@ public class Password {
         // create an additional LLQueue so that we can insert everything EXCEPT the password to delete
         LLQueue<Object> newPassList = new LLQueue<Object>();
 
-        // while the current LLqueue of passwords 
+        // while the current LLqueue of passwords is NOT empty, do the following:
         while (!trav.PassValues.isEmpty()) {
             // insert the first password in the queue into the other as long as it's not the password we delete
             holder = trav.PassValues.remove();
@@ -294,7 +294,9 @@ public class Password {
 
             }
             else if (holder == pswrdToDelete && passToDelete != null) {
-                // this case is to check for duplicate passwords; we can only delete one password at a time, so let's say that
+                // this case is to check for duplicate passwords; we can only delete one password at a time, 
+                // so here, we found the password we want to delete, but it's a duplicate since our passToDelete isn't null
+                // (which it should be null if we haven't found the password.)
                 System.out.println("Found password more than once. Deleting only the first found password.");
                 
                 // and we continue the loop
@@ -311,9 +313,17 @@ public class Password {
 
         }
 
-        // return the original linked list to its form without the password we 'deleted' - ** TODO **
+        // once we exit this first loop, we know that the original queue is empty and our new one should have everything except 
+        // the password we wanted to delete
 
-        // at the end we return whatever is in passToDelete
+        // return the original linked list to its form without the password we 'deleted' 
+        while (!newPassList.isEmpty()) {
+
+            // remove the first item in our new queue and place it into original queue, which inherently restores correct order
+            trav.PassValues.insert(newPassList.remove());
+        }
+
+        // at the end we return whatever is in passToDelete - null or not (client will check the result and print accordingly)
         return passToDelete;
 
     }
