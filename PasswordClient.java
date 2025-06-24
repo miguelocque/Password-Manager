@@ -205,9 +205,12 @@ public class PasswordClient {
                 // "Erase all Accounts Created for a Specific Account Type"
                 case 5:
 
+                // "How Many Accounts have you created?"
+                case 6:
+                    
 
                 // "Quit"
-                case 6:
+                case 7:
                     break;
                 
                 default:
@@ -215,7 +218,7 @@ public class PasswordClient {
             }
 
             // checking if we have our quit command
-            if (input == 6) {
+            if (input == 7) {
                 break;
             }
 
@@ -242,7 +245,8 @@ public class PasswordClient {
         System.out.println("3. List out All Saved Usernames and Passwords for a Specific Account Type");
         System.out.println("4. Delete Specific Username and Password from an Account");
         System.out.println("5. Erase all Accounts Created for a Specific Account Type");
-        System.out.println("6. Quit");
+        System.out.println("6. How Many Accounts Have you Created?");
+        System.out.println("7. Quit");
         System.out.println();
         System.out.println("-----------------------------------");
         System.out.println();
