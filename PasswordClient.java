@@ -159,6 +159,45 @@ public class PasswordClient {
 
                 // "Delete Specific Password from an Account/Username"
                 case 4:
+                    // get the account type
+                    System.out.print("What account are you saving? ");
+                    String acctForDelete = scanner.nextLine();
+                    System.out.println();
+
+                    // get the username
+                    System.out.print("Please type your username: ");
+                    String userForDelete = scanner.nextLine();
+                    System.out.println();
+
+                    // obtain password they want to delete
+                    System.out.print("Please enter the Password you would like to delete: ");
+                    String passToDelete = scanner.nextLine();
+
+                    // encrypt the typed in password so that we can accurately compare
+                    passToDelete = newAccountsWithPasswords.encrypt(passToDelete, pin);
+
+                    // create an Object to hold the result
+                    Object deletedPass = newAccountsWithPasswords.deletePass(acctForDelete, userForDelete, passToDelete);
+
+                    if (deletedPass != null) {
+                        // this means we obtained the deleted password; let's print it
+                        System.out.print("You have successfully deleted the password '");
+                        System.out.print(deletedPass);
+                        System.out.print("' for your ");
+                        System.out.print(acctForDelete);
+                        System.out.print(" account with username ");
+                        System.out.print(userForDelete);
+                        System.out.print(".");
+                        System.out.println();
+                    }
+                    else { // being here means that we have a returned null from the method, meaning we didn't delete anything
+
+                    System.out.println("The Password you seeked to Delete does not Exist for the " + acctForDelete + " with the " + 
+                    userForDelete + " username.");
+                        
+                    }
+
+
 
 
                 // "Erase all Accounts Created for a Specific Account Type"
