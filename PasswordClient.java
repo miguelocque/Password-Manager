@@ -180,7 +180,9 @@ public class PasswordClient {
                     Object deletedPass = newAccountsWithPasswords.deletePass(acctForDelete, userForDelete, passToDelete);
 
                     if (deletedPass != null) {
-                        // this means we obtained the deleted password; let's print it
+                        // this means we obtained the deleted password; let's decrypt it and print it
+                        deletedPass = newAccountsWithPasswords.decrypt((String)deletedPass, pin);
+
                         System.out.print("You have successfully deleted the password '");
                         System.out.print(deletedPass);
                         System.out.print("' for your ");
