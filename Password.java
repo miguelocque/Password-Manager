@@ -326,7 +326,11 @@ public class Password {
             trav.PassValues.insert(newPassList.remove());
         }
 
-        // at the end we return whatever is in passToDelete - null or not (client will check the result and print accordingly)
+        // at the end we return whatever is in passToDelete - null or not
+        if (passToDelete == null) {
+            System.out.println("The Password you seeked to delete does not exist for the " + acct + " account with the " + usrnm + " username.");
+        }
+
         return passToDelete;
 
     }
