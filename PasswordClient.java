@@ -124,11 +124,13 @@ public class PasswordClient {
                     // get the account type
                     System.out.print("What account are you saving? ");
                     String acct = scanner.nextLine();
+                    acct = acct.trim();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String user = scanner.nextLine();
+                    user = user.trim();
                     System.out.println();
 
                     // get the password
@@ -140,6 +142,7 @@ public class PasswordClient {
                         pass = scanner.nextLine();
                         System.out.println();
                     }
+                    pass = pass.trim();
                     System.out.println();
 
                     // here we want to call a method to encrypt the password before saving it.
@@ -165,16 +168,19 @@ public class PasswordClient {
                     // get the account type
                     System.out.print("What account are deleting from? ");
                     String acctForDelete = scanner.nextLine();
+                    acctForDelete = acctForDelete.trim();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String userForDelete = scanner.nextLine();
+                    userForDelete = userForDelete.trim();
                     System.out.println();
 
                     // obtain password they want to delete
                     System.out.print("Please enter the Password you would like to delete: ");
                     String passToDelete = scanner.nextLine();
+                    passToDelete = passToDelete.trim();
 
                     // encrypt the typed in password so that we can accurately compare
                     passToDelete = newAccountsWithPasswords.encrypt(passToDelete, pin);
@@ -197,8 +203,7 @@ public class PasswordClient {
                     }
                     else { // being here means that we have a returned null from the method, meaning we didn't delete anything
 
-                    System.out.println("The Password you seeked to Delete does not Exist for the " + acctForDelete + " with the " + 
-                    userForDelete + " username.");
+                    System.out.println("The Password you seeked to delete does not exist for the " + acctForDelete + " account with the " + userForDelete + " username.");
                         
                     }
 
