@@ -148,6 +148,9 @@ public class PasswordClient {
                     // now we can store it
                     newAccountsWithPasswords.createAccount(acct, user, pass);
 
+                    // skip the remaining cases
+                    continue;
+
 
                 // "Search for Existing Password with Account Type and Username"
                 case 2:
@@ -160,7 +163,7 @@ public class PasswordClient {
                 // "Delete Specific Password from an Account/Username"
                 case 4:
                     // get the account type
-                    System.out.print("What account are you saving? ");
+                    System.out.print("What account are deleting from? ");
                     String acctForDelete = scanner.nextLine();
                     System.out.println();
 
@@ -177,7 +180,7 @@ public class PasswordClient {
                     passToDelete = newAccountsWithPasswords.encrypt(passToDelete, pin);
 
                     // create an Object to hold the result
-                    Object deletedPass = newAccountsWithPasswords.deletePass(acctForDelete, userForDelete, passToDelete);
+                    String deletedPass = newAccountsWithPasswords.deletePass(acctForDelete, userForDelete, passToDelete);
 
                     if (deletedPass != null) {
                         // this means we obtained the deleted password; let's decrypt it and print it
