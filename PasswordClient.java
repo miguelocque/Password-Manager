@@ -192,6 +192,7 @@ public class PasswordClient {
                         // this means we obtained the deleted password; let's decrypt it and print it
                         deletedPass = newAccountsWithPasswords.decrypt((String)deletedPass, pin);
 
+                        System.out.println();
                         System.out.print("You have successfully deleted the password '");
                         System.out.print(deletedPass);
                         System.out.print("' for your ");
@@ -203,12 +204,12 @@ public class PasswordClient {
                     }
                     else { // being here means that we have a returned null from the method, meaning we didn't delete anything
 
-                    System.out.println("The Password you seeked to delete does not exist for the " + acctForDelete + " account with the " + userForDelete + " username.");
+                        // we already printed an error message, so we continue
+                        continue;
                         
                     }
 
-
-
+                    continue;
 
                 // "Erase all Accounts Created for a Specific Account Type"
                 case 5:
