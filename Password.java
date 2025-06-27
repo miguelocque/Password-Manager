@@ -287,13 +287,13 @@ public class Password {
             // insert the first password in the queue into the other as long as it's not the password we delete
             holder = trav.PassValues.remove();
 
-            if (holder != pswrdToDelete) {
+            if (!holder.equals(pswrdToDelete)) {
                 // if the current password in the queue is not what we're looking for
                 // insert into queue 
                 newPassList.insert(holder);
 
             }
-            else if (holder == pswrdToDelete && passToDelete != null) {
+            else if (holder.equals(passToDelete) && passToDelete != null) {
                 // this case is to check for duplicate passwords; we can only delete one password at a time, 
                 // so here, we found the password we want to delete, but it's a duplicate since our passToDelete isn't null
                 // (which it should be null if we haven't found the password.)
