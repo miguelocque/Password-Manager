@@ -212,7 +212,7 @@ public class Password {
             else {  // otherwise, there is a duplicate (both account type and username), and trav is pointing to it
             
                 // thus we simply check if the password already exists and insert accordingly
-                if (findPassInUsername(usrnm, pswrd) == null) {
+                if (findPassInUsername(usrnm, pswrd) != null) {
                     trav.PassValues.insert(pswrd);
 
                     //confirmation message for the insert
