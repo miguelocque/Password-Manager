@@ -38,13 +38,13 @@ public class Password {
     private class Node {
         private String account_type;
         private String username;
-        private LLQueue<Object> PassValues;
+        private LLQueue<String> PassValues;
         private Node next;
         
-        private Node(String acct, String usr, Object pswrd) {
+        private Node(String acct, String usr, String pswrd) {
             this.account_type = acct;
             this.username = usr;
-            PassValues = new LLQueue<Object>();
+            PassValues = new LLQueue<String>();
             PassValues.insert(pswrd);
             this.next = null;
         }
@@ -77,12 +77,12 @@ public class Password {
     // **************************** CORRECT ABOVE THESE LINES ********************************
 
     // wrapper method to call the private method 
-    public void createAccount(String acct, String usrnm, Object pswrd) {
+    public void createAccount(String acct, String usrnm, String pswrd) {
         insertPass(acct, usrnm, pswrd);
     }
 
     // method that will be called whenever a new password wants to be inserted
-    private boolean insertPass(String acct, String usrnm, Object pswrd) {
+    private boolean insertPass(String acct, String usrnm, String pswrd) {
         // first we get the hash value of the account type
         int position = h1(acct);
 
@@ -242,7 +242,7 @@ public class Password {
     }
 
     // delete method
-    public Object deletePass(String acct, String usrnm, Object pswrdToDelete) {
+    public String deletePass(String acct, String usrnm, Object pswrdToDelete) {
         // get the hash value of the username
         int position = h1(acct);
 
@@ -274,13 +274,13 @@ public class Password {
         // if we're here that means we have password(s) saved.
         // we must go through the password(s) until we 
         // find the correct one and proceed to delete it
-        Object passToDelete = null;
+        String passToDelete = null;
 
         // holder object for passwords in queue
-        Object holder = null;
+        String holder = null;
 
         // create an additional LLQueue so that we can insert everything EXCEPT the password to delete
-        LLQueue<Object> newPassList = new LLQueue<Object>();
+        LLQueue<String> newPassList = new LLQueue<String>();
 
         // while the current LLqueue of passwords is NOT empty, do the following:
         while (!trav.PassValues.isEmpty()) {
@@ -362,7 +362,7 @@ public class Password {
             // one more while loop to reset the queue
             while (!passSearch.isEmpty()) {
                 // get the first item in the NEW queue
-                Object movePassBack = passSearch.remove();
+                String movePassBack = (String)passSearch.remove();
 
                 // place the password back into original queue
                 trav.PassValues.insert(movePassBack);
