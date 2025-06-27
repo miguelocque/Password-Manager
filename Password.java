@@ -157,20 +157,21 @@ public class Password {
                 System.out.print(trav.username);
                 System.out.print(" (y/n) - ");
                 String correctUsername = scanner.nextLine();
+                correctUsername = correctUsername.trim();
 
                 if (correctUsername.equals("y") || correctUsername.equals("Y")) {
                     // in this case we know that the user meant the existing username
 
                     // first we check if the password already exists in this queue
                     // if we got null back from the searcher method, that means the password does not exist and we can insert
-                    if (findPassInUsername(usrnm, pswrd) == null) {
+                    if (findPassInUsername(usrnm, pswrd) != null) {
                         trav.PassValues.insert(pswrd);
 
                         //confirmation message for the insert
                         System.out.print("Password for the ");
-                        System.out.print(acct);
+                        System.out.print(trav.account_type);
                         System.out.print(" account with username ");
-                        System.out.print(usrnm);
+                        System.out.print(trav.username);
                         System.out.print(" was saved!");
                         System.out.println();
                     }
@@ -249,8 +250,10 @@ public class Password {
         // make a trav Node so that we can go through the linked list
         Node trav = table[position];
 
+        // must check to see if there's anything at the current trav, so make the trav != null check first
+
         // now we go through the linked list until our account and username match or we reach the end
-        while ((!trav.username.equals(usrnm) && !trav.account_type.equals(acct)) && trav != null) {
+        while (trav != null && (!trav.username.equals(usrnm) && !trav.account_type.equals(acct))) {
             trav = trav.next;
         }
         
