@@ -78,11 +78,17 @@ public class Password {
 
     // wrapper method to call the private method 
     public void createAccount(String acct, String usrnm, String pswrd) {
+        // we do an error check before calling the method, to ensure we're saving valid credentials
+        if (acct.equals(null) || usrnm.equals(null) || pswrd.equals(null)) {
+            throw new IllegalArgumentException("Credentials cannot be NULL. Please try again");
+        }
+
         insertPass(acct, usrnm, pswrd);
     }
 
     // method that will be called whenever a new password wants to be inserted
     private boolean insertPass(String acct, String usrnm, String pswrd) {
+
         // first we get the hash value of the account type
         int position = h1(acct);
 
@@ -164,7 +170,7 @@ public class Password {
 
                     // first we check if the password already exists in this queue
                     // if we got null back from the searcher method, that means the password does not exist and we can insert
-                    if (findPassInUsername(usrnm, pswrd) != null) {
+                    if (findPassInUsername(acct, usrnm, pswrd) != null) {
                         trav.PassValues.insert(pswrd);
 
                         //confirmation message for the insert
@@ -212,7 +218,7 @@ public class Password {
             else {  // otherwise, there is a duplicate (both account type and username), and trav is pointing to it
             
                 // thus we simply check if the password already exists and insert accordingly
-                if (findPassInUsername(usrnm, pswrd) != null) {
+                if (findPassInUsername(acct, usrnm, pswrd) != null) {
                     trav.PassValues.insert(pswrd);
 
                     //confirmation message for the insert
@@ -226,12 +232,8 @@ public class Password {
 
                 else {
                     //confirmation message for the already existing password
-                    System.out.print("Password for the ");
-                    System.out.print(acct);
-                    System.out.print(" account with username ");
-                    System.out.print(usrnm);
-                    System.out.print(" already exists.");
-                    System.out.println();
+                    
+                    // we do nothing, everything is handled in the find method
                 }
 
                 // ** we DONT update numKeys because we're inserting an additional password to an already existing key **
@@ -312,7 +314,6 @@ public class Password {
 
                 // and continue through the loop
             }
-            
 
         }
 
@@ -335,8 +336,18 @@ public class Password {
 
     }
 
+    public String findPass(String acct, String user, String pass) {
+        // null check for invalid credentials
+        if (acct.equals(null) || user.equals(null) || pass.equals(null)) {
+            throw new IllegalArgumentException("Credentials cannot be NULL. Please try again");
+        }
+
+        return findPassInUsername(acct, user, pass);
+    }
+
+
     // search method -- ** TODO ** 
-    private Object findPassInUsername(Object usrnm, Object pswrd) {
+    private String findPassInUsername(String acct, String usrnm, String pswrd) {
         // get the hash value of the username
         int position = h1(usrnm);
 
@@ -344,40 +355,53 @@ public class Password {
         Node trav = table[position];
 
         // make an extra queue to go through the linked list passwords
-        LLQueue<Object> passSearch = new LLQueue<Object>();
+        LLQueue<String> passSearch = new LLQueue<String>();
 
         // an additional holder variable to store null to check if we have the correct password to return at the end
-        Object foundPass = null;
+        String foundPass = null;
 
-        // go through the linked list, and empty the LLqueue in a nested loop, by pushing it onto a different queue
-        // then back to the original queue
-        while (trav != null) {
-            // while the password queue is not empty
-            while (!trav.PassValues.isEmpty()) {
-                // get the first item in the queue and store it in a variable
-                Object holder = trav.PassValues.remove();
-                
-                // if the password we got is the password we're looking for, so we return it
-                if (holder.equals(pswrd)) {
-                    foundPass = holder;
-                }
- 
-                // insert the password into the temp queue
-                passSearch.insert(holder);
+        // now we go through the linked list until our account and username match or we reach the end
+        while (trav != null && (!trav.username.equals(usrnm) && !trav.account_type.equals(acct))) {
+            trav = trav.next;
+        }
 
+        // now trav is either null or pointing to the right thing, let's do a null check
+        if (trav == null) {
+            // this means that we don't have a valid account under the given credentials; let's print that
+            System.out.println("Account/Username not Found. Try again.");
+            return null;
+        }
+
+        // getting here assumes we are pointing to the correct account
+
+        // while the password queue is not empty
+        while (!trav.PassValues.isEmpty()) {
+            // get the first item in the queue and store it in a variable
+            String holder = trav.PassValues.remove();
+            
+            // if the password we got is the password we're looking for, so we return it
+            if (holder.equals(pswrd)) {
+                foundPass = holder;
             }
+
+            // insert the password into the temp queue
+            passSearch.insert(holder);
+
             // one more while loop to reset the queue
             while (!passSearch.isEmpty()) {
                 // get the first item in the NEW queue
-                String movePassBack = (String)passSearch.remove();
+                String movePassBack = passSearch.remove();
 
                 // place the password back into original queue
                 trav.PassValues.insert(movePassBack);
             }
 
-            // move trav to the next value
-            trav = trav.next;
-        } 
+        }
+
+        // first let's check if foundPass is null, which if it is we should print an error message and say not found
+        if (foundPass == null) {
+            System.out.println("Password not located for your " + acct + " account.");
+        }
 
         // we return 'foundPass' which should either have the correct password or null
         return foundPass;
