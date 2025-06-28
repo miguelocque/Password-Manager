@@ -163,8 +163,40 @@ public class PasswordClient {
                     continue;
 
 
-                // "Search for Existing Password with Account Type and Username"
+                // "Search for Existing Password with Account and Username"
                 case 2:
+                    // get the account type
+                    System.out.print("What account are you searching for? ");
+                    String acctToFind = scanner.nextLine();
+                    acctToFind = acctToFind.trim();
+                    System.out.println();
+
+                    // get the username
+                    System.out.print("Please type your username: ");
+                    String userToFind = scanner.nextLine();
+                    userToFind = userToFind.trim();
+                    System.out.println();
+
+                    // obtain password they want to delete
+                    System.out.print("Please enter the Password you would like to delete: ");
+                    String passToFind = scanner.nextLine();
+                    passToFind = passToFind.trim();
+
+                    // encrypt the typed in password so that we can accurately compare
+                    passToFind = newAccountsWithPasswords.encrypt(passToFind, pin);
+
+                    // create a String to show the user their found Password
+                    String found = newAccountsWithPasswords.findPass(acctToFind, userToFind, passToFind);
+
+                    // decrypt the password to display
+                    if (found != null) {
+                        found = newAccountsWithPasswords.decrypt(found, pin);
+                        System.out.println("Your " + acctToFind + " password was found and exists!");
+                        System.out.println("This is your password: " + found);
+                    }
+
+                    // continue with the loop
+                    continue;
 
 
                 // "List out All Saved Usernames and Passwords for a Specific Account Type"
@@ -193,12 +225,12 @@ public class PasswordClient {
                     // encrypt the typed in password so that we can accurately compare
                     passToDelete = newAccountsWithPasswords.encrypt(passToDelete, pin);
 
-                    // create an Object to hold the result
+                    // create a String to hold the result
                     String deletedPass = newAccountsWithPasswords.deletePass(acctForDelete, userForDelete, passToDelete);
 
                     if (deletedPass != null) {
                         // this means we obtained the deleted password; let's decrypt it and print it
-                        deletedPass = newAccountsWithPasswords.decrypt((String)deletedPass, pin);
+                        deletedPass = newAccountsWithPasswords.decrypt(deletedPass, pin);
 
                         System.out.println();
                         System.out.print("You have successfully deleted the password '");
