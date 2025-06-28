@@ -346,7 +346,7 @@ public class Password {
     }
 
 
-    // search method -- ** TODO ** 
+    // search method  
     private String findPassInUsername(String acct, String usrnm, String pswrd) {
         // get the hash value of the username
         int position = h1(usrnm);
@@ -474,6 +474,9 @@ public class Password {
 
     // method to retrieve passwords from one username into an array - ** TODO **
 
-    // 
+    // method that returns the number of accounts the user has saved
+    public int numAccounts() {
+        return numKeys;
+    }
 
 }
