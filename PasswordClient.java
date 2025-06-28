@@ -211,11 +211,12 @@ public class PasswordClient {
 
                     continue;
 
-                // "Erase all Accounts Created for a Specific Account Type"
+                // "Erase all Passwords Created for a Specific Account Type"
                 case 5:
 
                 // "How Many Accounts have you created?"
                 case 6:
+                    System.out.println("You have created " + newAccountsWithPasswords.numAccounts() + " accounts!");
                     
 
                 // "Quit"
@@ -252,8 +253,8 @@ public class PasswordClient {
         System.out.println("1. Store New Username/Password for Specific Account");
         System.out.println("2. Search for Existing Password with Account Type and Username");
         System.out.println("3. List out All Saved Usernames and Passwords for a Specific Account Type");
-        System.out.println("4. Delete Specific Username and Password from an Account");
-        System.out.println("5. Erase all Accounts Created for a Specific Account Type");
+        System.out.println("4. Delete Specific Password from an Account/Username");
+        System.out.println("5. Erase all Passwords Created for a Specific Account Type");
         System.out.println("6. How Many Accounts Have you Created?");
         System.out.println("7. Quit");
         System.out.println();
