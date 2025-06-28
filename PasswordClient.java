@@ -1,4 +1,12 @@
-// Miguel Ocque - mocque@bu.edu
+/**
+ * PasswordClient.java
+ *
+ * A command-line password manager with AES-128 encryption and SHA-256 authentication.
+ *
+ * @author Miguel Ocque
+ * @version 1.0
+ * @since 2025-06-28
+ */
 
 import java.util.Scanner;
 import java.io.*;
@@ -218,9 +226,11 @@ public class PasswordClient {
                 case 6:
                     System.out.println("You have created " + newAccountsWithPasswords.numAccounts() + " accounts!");
                     
+                // Delete Account
+                case 7:
 
                 // "Quit"
-                case 7:
+                case 8:
                     break;
                 
                 default:
@@ -228,7 +238,7 @@ public class PasswordClient {
             }
 
             // checking if we have our quit command
-            if (input == 7) {
+            if (input == 8) {
                 break;
             }
 
@@ -256,7 +266,8 @@ public class PasswordClient {
         System.out.println("4. Delete Specific Password from an Account/Username");
         System.out.println("5. Erase all Passwords Created for a Specific Account Type");
         System.out.println("6. How Many Accounts Have you Created?");
-        System.out.println("7. Quit");
+        System.out.println("7. Delete Account");
+        System.out.println("8. Quit");
         System.out.println();
         System.out.println("-----------------------------------");
         System.out.println();
