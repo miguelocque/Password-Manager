@@ -1,15 +1,11 @@
-/*
- * created by: Miguel Ocque - mocque@bu.edu
+/**
+ * Password.java
  *
- * implementing a password manager:
- * - first asks the user how many total accounts they want to create
- * - asks the user if they want to create their own password or generate one
- * - asks the user what the username they want to save is
- * - asks the user what account they're saving the password for
- * - utilizes hash table chaining to save the password: linked list form
- * - passwords will be kept in a queue, such that if any duplicate accounts, it will show all relevant saved passwords
- * - will be done in a while loop format, such that there are options to do each thing every time an action is performed
- * - must indicate when they want to quit
+ * The Engine that runs the password manager, utilizing libraries, OOP, and correct privacy methodology
+ *
+ * @author Miguel Ocque
+ * @version 1.0
+ * @since 2025-06-28
  */
 
 import java.util.*;
