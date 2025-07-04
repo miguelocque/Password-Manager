@@ -534,7 +534,11 @@ public class Password {
             while (!trav.PassValues.isEmpty()) {
                 // get the first password in the queue
                 String curPass = trav.PassValues.remove();
+
+                // add the current pasword to the array
                 passwords.add(curPass);
+
+                // and insert 
                 holder.insert(curPass);
 
             }
