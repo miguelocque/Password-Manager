@@ -469,12 +469,12 @@ public class Password {
 
 
     // method to retrieve passwords from one username into an array - ** TODO **
-    public String[] retrievePasswords(String acct, String user) {
+    public String[] retrievePasswords(String acct, String user, String pin) {
         // call the private method
-        return placePasswordsIntoArray(acct, user);
+        return placePasswordsIntoArray(acct, user, pin);
     }
 
-    private String[] placePasswordsIntoArray(String acct, String user) {
+    private String[] placePasswordsIntoArray(String acct, String user, String pin) {
         // private method that will be called by the wrapper method to retrieve credentials
 
         // error check for null credentials
@@ -524,27 +524,48 @@ public class Password {
 
         }
 
-        // if we reach this else statement, that means that we have both the correct username and password, so we can
+        // if we're here, that means that we should have both the correct username and password, so we can
         // go through the queue of passwords and place them into the arraylist
-        else {
-            // a holder queue to place the passwords in correct order and then back into the original queue
-            LLQueue<String> holder = new LLQueue<>();
+        // a holder queue to place the passwords in correct order and then back into the original queue
+        LLQueue<String> holder = new LLQueue<>();
 
-            // loop through the trav queue until empty
-            while (!trav.PassValues.isEmpty()) {
-                // get the first password in the queue
-                String curPass = trav.PassValues.remove();
+        // loop through the trav queue until empty
+        while (!trav.PassValues.isEmpty()) {
+            // get the first password in the queue
+            String curPass = trav.PassValues.remove();
 
-                // add the current pasword to the array
-                passwords.add(curPass);
+            // add the current pasword to the array
+            passwords.add(curPass);
 
-                // and insert 
-                holder.insert(curPass);
-
-            }
+            // and insert the current password into our new holder queue
+            holder.insert(curPass);
         }
 
-        return new String[1];
+        // now we've reached the point where our passwords are all in our arraylist, but they
+        // are currently encrypted, so we should go through every element and decrypt it
+        for (String str : passwords) {
+            str = decrypt(str, pin);
+        }
+
+        // now we should restore our original queue 
+        while (!holder.isEmpty()) {
+            // remove the first item from the queue
+            String curPass = holder.remove();
+
+            // and insert it back into the original queue
+            trav.PassValues.insert(curPass);
+        }
+
+        // now we have to turn our arraylist into a string array
+        String [] result = new String[passwords.size()];
+
+        // loop through our arrays and update the correct result array
+        for (int i = 0; i < result.length; i++) {
+            result[i] = passwords.get(i);
+        }
+
+        // and we can safely return our array
+        return result;
     }
 
     // method that returns the number of accounts the user has saved
