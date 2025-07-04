@@ -476,6 +476,70 @@ public class Password {
 
     private String[] placePasswordsIntoArray(String acct, String user) {
         // private method that will be called by the wrapper method to retrieve credentials
+
+        // error check for null credentials
+        if (acct == null || user == null || user.equals("") || acct.equals("")) {
+            return null;
+        }
+        
+        // first obtain the correct position on the table to look up the account
+        int position = h1(acct);
+
+        // create an arrayList to add to from our queue of passwords when we find the account
+        List<String> passwords = new ArrayList<>();
+
+        // now we loop through the linked list at the position with a trav var
+        Node trav = table[position];
+
+        // until we're either null or at the correct user/acct
+        while (trav != null && (!trav.account_type.equals(acct) && !trav.username.equals(user))) {
+            // loop until we find the correct one
+            trav = trav.next;
+        }
+
+        // now that we're out of the loop we should check if our trav is null, meaning we didnt find anything
+        if (trav == null) {
+            return null;
+        }
+
+        // if we're here, that means that we found the correct node with the credentials, which we want to double check,
+        // because our loop may have terminated only with one correct credential
+        if (trav.account_type.equals(acct) && !trav.username.equals(user)) {
+            // this means we have the correct account, but not the correct username, 
+            // so we need to loop through more and see if we find it
+
+            while (trav != null && (!trav.username.equals(user) && trav.account_type.equals(acct))) {
+                trav = trav.next;
+            }
+
+        }
+
+        else if (!trav.account_type.equals(acct) && trav.username.equals(user)) {
+            // this means we have the correct username, but not the correct account, 
+            // so we need to loop through more and see if we find it
+
+            while (trav != null && (trav.username.equals(user) && !trav.account_type.equals(acct))) {
+                trav = trav.next;
+            }
+
+        }
+
+        // if we reach this else statement, that means that we have both the correct username and password, so we can
+        // go through the queue of passwords and place them into the arraylist
+        else {
+            // a holder queue to place the passwords in correct order and then back into the original queue
+            LLQueue<String> holder = new LLQueue<>();
+
+            // loop through the trav queue until empty
+            while (!trav.PassValues.isEmpty()) {
+                // get the first password in the queue
+                String curPass = trav.PassValues.remove();
+                passwords.add(curPass);
+                holder.insert(curPass);
+
+            }
+        }
+
         return new String[1];
     }
 
