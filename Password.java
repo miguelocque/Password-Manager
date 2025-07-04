@@ -524,6 +524,11 @@ public class Password {
 
         }
 
+        // do another check for if trav is null, which should return null if so
+        if (trav == null) {
+            return null;
+        }
+
         // if we're here, that means that we should have both the correct username and password, so we can
         // go through the queue of passwords and place them into the arraylist
         // a holder queue to place the passwords in correct order and then back into the original queue
