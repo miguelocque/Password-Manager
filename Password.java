@@ -351,7 +351,7 @@ public class Password {
         Node trav = table[position];
 
         // make an extra queue to go through the linked list passwords
-        LLQueue<String> passSearch = new LLQueue<String>();
+        LLQueue<String> passSearch = new LLQueue<>();
 
         // an additional holder variable to store null to check if we have the correct password to return at the end
         String foundPass = null;
@@ -359,6 +359,24 @@ public class Password {
         // now we go through the linked list until our account and username match or we reach the end
         while (trav != null && (!trav.username.equals(usrnm) && !trav.account_type.equals(acct))) {
             trav = trav.next;
+        }
+
+        // we have to check if both the username and account match
+        if (trav.username.equals(usrnm) && !trav.account_type.equals(acct)) {
+            while (trav != null && !trav.account_type.equals(acct)) {
+                trav = trav.next;
+                if (trav != null && trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
+                    break;
+                }
+            }
+        }
+        else if (!trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
+            while (trav != null && !trav.username.equals(usrnm)) {
+                trav = trav.next;
+                if (trav != null && trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
+                    break;
+                }
+            }
         }
 
         // now trav is either null or pointing to the right thing, let's do a null check
@@ -508,8 +526,12 @@ public class Password {
             // this means we have the correct account, but not the correct username, 
             // so we need to loop through more and see if we find it
 
-            while (trav != null && (!trav.username.equals(user) && trav.account_type.equals(acct))) {
+            while (trav != null && !trav.username.equals(user)) {
                 trav = trav.next;
+                if (trav != null && trav.username.equals(user) && trav.account_type.equals(acct)) {
+                    break;
+                }
+
             }
 
         }
@@ -518,8 +540,11 @@ public class Password {
             // this means we have the correct username, but not the correct account, 
             // so we need to loop through more and see if we find it
 
-            while (trav != null && (trav.username.equals(user) && !trav.account_type.equals(acct))) {
+            while (trav != null && !trav.account_type.equals(acct)) {
                 trav = trav.next;
+                if (trav != null && trav.username.equals(user) && trav.account_type.equals(acct)) {
+                    break;
+                }
             }
 
         }
