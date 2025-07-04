@@ -8,6 +8,7 @@
  * @since May 2025
  */
 
+import java.util.Arrays;
 import java.util.Scanner;
 import java.io.*;
 
@@ -201,6 +202,32 @@ public class PasswordClient {
 
                 // "List out All Saved Usernames and Passwords for a Specific Account Type"
                 case 3:
+                    // this obtains the account
+                    System.out.println("From what account would you like your passwords? ");
+                    String acctToLookUp = scanner.nextLine();
+                    acctToLookUp = acctToLookUp.trim();
+                    System.out.println();
+
+                    // obtains the username
+                    System.out.println("What's the username for that account? ");
+                    String userToLookUp = scanner.nextLine();
+                    userToLookUp = userToLookUp.trim();
+                    System.out.println();
+
+                    // now we call the method, with the pin, and if we get null we print an error message
+                    String [] passwordsObtained = newAccountsWithPasswords.retrievePasswords(acctToLookUp, userToLookUp, pin);
+
+                    if (passwordsObtained != null) {
+                        // here we have an array that we can print to the user
+                        System.out.println("Here are your passwords for your " + acctToLookUp + " account: " + Arrays.toString(passwordsObtained));
+                    }
+                    else {
+                        System.out.println("Error. Account was not found, thus no passwords were obtained. Try again.");
+                    }
+
+                    // and continue with our loop
+                    continue;
+
                 
 
                 // "Delete Specific Password from an Account/Username"
