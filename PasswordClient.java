@@ -134,12 +134,14 @@ public class PasswordClient {
                     System.out.print("What account are you saving? ");
                     String acct = scanner.nextLine();
                     acct = acct.trim();
+                    acct = acct.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String user = scanner.nextLine();
                     user = user.trim();
+                    user = user.toLowerCase();
                     System.out.println();
 
                     // get the password
@@ -170,18 +172,21 @@ public class PasswordClient {
                     System.out.print("What account are you searching for? ");
                     String acctToFind = scanner.nextLine();
                     acctToFind = acctToFind.trim();
+                    acctToFind = acctToFind.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String userToFind = scanner.nextLine();
                     userToFind = userToFind.trim();
+                    userToFind = userToFind.toLowerCase();
                     System.out.println();
 
-                    // obtain password they want to delete
-                    System.out.print("Please enter the Password you would like to delete: ");
+                    // obtain password they want to find
+                    System.out.print("Please enter the Password you would like to find: ");
                     String passToFind = scanner.nextLine();
                     passToFind = passToFind.trim();
+                    System.out.println();
 
                     // encrypt the typed in password so that we can accurately compare
                     passToFind = newAccountsWithPasswords.encrypt(passToFind, pin);
@@ -206,12 +211,14 @@ public class PasswordClient {
                     System.out.println("From what account would you like your passwords? ");
                     String acctToLookUp = scanner.nextLine();
                     acctToLookUp = acctToLookUp.trim();
+                    acctToLookUp = acctToLookUp.toLowerCase();
                     System.out.println();
 
                     // obtains the username
                     System.out.println("What's the username for that account? ");
                     String userToLookUp = scanner.nextLine();
                     userToLookUp = userToLookUp.trim();
+                    userToLookUp = userToLookUp.toLowerCase();
                     System.out.println();
 
                     // now we call the method, with the pin, and if we get null we print an error message
@@ -228,19 +235,21 @@ public class PasswordClient {
                     // and continue with our loop
                     continue;
 
-                    
+
                 // "Delete Specific Password from an Account/Username"
                 case 4:
                     // get the account type
                     System.out.print("What account are deleting from? ");
                     String acctForDelete = scanner.nextLine();
                     acctForDelete = acctForDelete.trim();
+                    acctForDelete = acctForDelete.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String userForDelete = scanner.nextLine();
                     userForDelete = userForDelete.trim();
+                    userForDelete = userForDelete.toLowerCase();
                     System.out.println();
 
                     // obtain password they want to delete
