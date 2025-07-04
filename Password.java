@@ -368,31 +368,6 @@ public class Password {
             return null;
         }
 
-        // we have to check if both the username and account match
-        if (trav.username.equals(usrnm) && !trav.account_type.equals(acct)) {
-            while (trav != null && !trav.account_type.equals(acct)) {
-                trav = trav.next;
-                if (trav != null && trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
-                    break;
-                }
-            }
-        }
-        else if (!trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
-            while (trav != null && !trav.username.equals(usrnm)) {
-                trav = trav.next;
-                if (trav != null && trav.username.equals(usrnm) && trav.account_type.equals(acct)) {
-                    break;
-                }
-            }
-        }
-
-        // now trav is either null or pointing to the right thing, let's do a null check
-        if (trav == null) {
-            // this means that we don't have a valid account under the given credentials; let's print that
-            System.out.println("Account/Username not Found. Try again.");
-            return null;
-        }
-
         // getting here assumes we are pointing to the correct account
 
         // while the password queue is not empty
@@ -523,40 +498,6 @@ public class Password {
         }
 
         // now that we're out of the loop we should check if our trav is null, meaning we didnt find anything
-        if (trav == null) {
-            return null;
-        }
-
-        // if we're here, that means that we found the correct node with the credentials, which we want to double check,
-        // because our loop may have terminated only with one correct credential
-        if (trav.account_type.equals(acct) && !trav.username.equals(user)) {
-            // this means we have the correct account, but not the correct username, 
-            // so we need to loop through more and see if we find it
-
-            while (trav != null && !trav.username.equals(user)) {
-                trav = trav.next;
-                if (trav != null && trav.username.equals(user) && trav.account_type.equals(acct)) {
-                    break;
-                }
-
-            }
-
-        }
-
-        else if (!trav.account_type.equals(acct) && trav.username.equals(user)) {
-            // this means we have the correct username, but not the correct account, 
-            // so we need to loop through more and see if we find it
-
-            while (trav != null && !trav.account_type.equals(acct)) {
-                trav = trav.next;
-                if (trav != null && trav.username.equals(user) && trav.account_type.equals(acct)) {
-                    break;
-                }
-            }
-
-        }
-
-        // do another check for if trav is null, which should return null if so
         if (trav == null) {
             return null;
         }
