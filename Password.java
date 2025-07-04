@@ -469,6 +469,15 @@ public class Password {
 
 
     // method to retrieve passwords from one username into an array - ** TODO **
+    public String[] retrievePasswords(String acct, String user) {
+        // call the private method
+        return placePasswordsIntoArray(acct, user);
+    }
+
+    private String[] placePasswordsIntoArray(String acct, String user) {
+        // private method that will be called by the wrapper method to retrieve credentials
+        return new String[1];
+    }
 
     // method that returns the number of accounts the user has saved
     public int numAccounts() {
