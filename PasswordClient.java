@@ -228,8 +228,7 @@ public class PasswordClient {
                     // and continue with our loop
                     continue;
 
-                
-
+                    
                 // "Delete Specific Password from an Account/Username"
                 case 4:
                     // get the account type
