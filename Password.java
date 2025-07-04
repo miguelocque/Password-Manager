@@ -108,7 +108,7 @@ public class Password {
             Node trav = table[position];
 
             // traverse through the things at the position until either we reach the end or find a dupe
-            while (trav != null && !trav.username.equals(usrnm) && !trav.account_type.equals(acct)) {
+            while (trav != null && (!trav.username.equals(usrnm) && !trav.account_type.equals(acct))) {
                 trav = trav.next;
             }
 
@@ -263,6 +263,8 @@ public class Password {
             return null;
         }
 
+        // CHECK TO SEE IF BOTH USER AND ACCOUNT MATCH - ** TODO **
+
         // if we don't go into the if statement, that means we have a match; 
 
         // first we should check to see if the current list is empty, implying that no passwords even exist for this account/username
@@ -367,6 +369,8 @@ public class Password {
             System.out.println("Account/Username not Found. Try again.");
             return null;
         }
+
+        // MUST CHECK TO SEE THAT BOTH MATCH - ** TODO ** 
 
         // getting here assumes we are pointing to the correct account
 
@@ -501,6 +505,8 @@ public class Password {
         if (trav == null) {
             return null;
         }
+
+        // MUST ENSURE WE POINT TO THE RIGHT THING - ** TODO ** 
 
         // if we're here, that means that we should have both the correct username and password, so we can
         // go through the queue of passwords and place them into the arraylist
