@@ -361,6 +361,13 @@ public class Password {
             trav = trav.next;
         }
 
+        // now trav is either null or pointing to the one of the right things, let's do a null check
+        if (trav == null) {
+            // this means that we don't have a valid account under the given credentials; let's print that
+            System.out.println("Account/Username not Found. Try again.");
+            return null;
+        }
+
         // we have to check if both the username and account match
         if (trav.username.equals(usrnm) && !trav.account_type.equals(acct)) {
             while (trav != null && !trav.account_type.equals(acct)) {
