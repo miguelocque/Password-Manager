@@ -496,17 +496,12 @@ public class Password {
         Node trav = table[position];
 
         // until we're either null or at the correct user/acct
-        while (trav != null && (!trav.account_type.equals(acct) && !trav.username.equals(user))) {
-            // loop until we find the correct one
-            trav = trav.next;
-        }
+        trav = rightAccount(trav, acct, user);
 
         // now that we're out of the loop we should check if our trav is null, meaning we didnt find anything
         if (trav == null) {
             return null;
         }
-
-        // MUST ENSURE WE POINT TO THE RIGHT THING - ** TODO ** 
 
         // if we're here, that means that we should have both the correct username and password, so we can
         // go through the queue of passwords and place them into the arraylist
@@ -550,6 +545,18 @@ public class Password {
 
         // and we can safely return our array
         return result;
+    }
+
+    // helper method that finds the correct account
+    private Node rightAccount(Node trav, String acct, String user) {
+        while (trav != null) {
+            if (trav != null && trav.account_type.equals(acct) && trav.username.equals(user)) {
+                break;
+            } 
+            trav = trav.next;
+        }
+
+        return trav;
     }
 
     // method that returns the number of accounts the user has saved
