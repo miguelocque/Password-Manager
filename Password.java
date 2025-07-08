@@ -472,7 +472,7 @@ public class Password {
     // **************************** CORRECT ABOVE THESE LINES ********************************
 
 
-    // method to retrieve passwords from one username into an array - ** TODO **
+    // method to retrieve passwords from one username into an array
     public String[] retrievePasswords(String acct, String user, String pin) {
         // call the private method
         return placePasswordsIntoArray(acct, user, pin);
