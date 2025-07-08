@@ -142,6 +142,9 @@ public class Password {
                 newAccount.next = trav;
                 trav = newAccount;
 
+                // this points the head of the linked list to the new Node created
+                table[position] = newAccount;
+
                 // ** we DO update numKeys because we're creating a new account **
                 numKeys++;
 
@@ -199,6 +202,9 @@ public class Password {
                     newAccount.next = trav;
                     trav = newAccount;
 
+                    // this points the head of the linked list to the new Node created
+                    table[position] = newAccount;
+
                     // ** we DO update numKeys because we're creating a new account **
                     numKeys++;
 
@@ -251,9 +257,7 @@ public class Password {
         // must check to see if there's anything at the current trav, so make the trav != null check first
 
         // now we go through the linked list until our account and username match or we reach the end
-        while (trav != null && (!trav.username.equals(usrnm) && !trav.account_type.equals(acct))) {
-            trav = trav.next;
-        }
+        trav = rightAccount(trav, acct, usrnm);
         
         // if we reach the end of the list and trav is null, that means we can't find an account/username under which the password
         // is located
@@ -345,9 +349,9 @@ public class Password {
 
 
     // search method  
-    private String findPassInUsername(String acct, String usrnm, String pswrd) {
+    private String findPassInUsername(String acct, String user, String pass) {
         // get the hash value of the username
-        int position = h1(usrnm);
+        int position = h1(acct);
 
         // make a trav Node so that we can go through the linked list
         Node trav = table[position];
@@ -359,9 +363,7 @@ public class Password {
         String foundPass = null;
 
         // now we go through the linked list until our account and username match or we reach the end
-        while (trav != null && (!trav.username.equals(usrnm) && !trav.account_type.equals(acct))) {
-            trav = trav.next;
-        }
+        trav = rightAccount(trav, acct, pass);
 
         // now trav is either null or pointing to the one of the right things, let's do a null check
         if (trav == null) {
@@ -380,7 +382,7 @@ public class Password {
             String holder = trav.PassValues.remove();
             
             // if the password we got is the password we're looking for, so we return it
-            if (holder.equals(pswrd)) {
+            if (holder.equals(pass)) {
                 foundPass = holder;
             }
 
