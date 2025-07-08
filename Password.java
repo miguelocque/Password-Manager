@@ -167,9 +167,11 @@ public class Password {
                 if (correctUsername.equals("y") || correctUsername.equals("Y")) {
                     // in this case we know that the user meant the existing username
 
+                    // first we have to change the credentials to 
+
                     // first we check if the password already exists in this queue
                     // if we got null back from the searcher method, that means the password does not exist and we can insert
-                    if (findPassInUsername(acct, usrnm, pswrd) != null) {
+                    if (findPassInUsername(trav.account_type, trav.username, pswrd) != null) {
                         trav.PassValues.insert(pswrd);
 
                         //confirmation message for the insert
@@ -184,9 +186,9 @@ public class Password {
                     else {
                         //confirmation message for the already existing password
                         System.out.print("Password for the ");
-                        System.out.print(acct);
+                        System.out.print(trav.account_type);
                         System.out.print(" account with username ");
-                        System.out.print(usrnm);
+                        System.out.print(trav.username);
                         System.out.print(" already exists.");
                         System.out.println();
                     }
