@@ -134,14 +134,14 @@ public class PasswordClient {
                     System.out.print("What account are you saving? ");
                     String acct = scanner.nextLine();
                     acct = acct.trim();
-                    acct = acct.toLowerCase();
+                    // acct = acct.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String user = scanner.nextLine();
                     user = user.trim();
-                    user = user.toLowerCase();
+                    // user = user.toLowerCase();
                     System.out.println();
 
                     // get the password
@@ -172,14 +172,14 @@ public class PasswordClient {
                     System.out.print("What account are you searching for? ");
                     String acctToFind = scanner.nextLine();
                     acctToFind = acctToFind.trim();
-                    acctToFind = acctToFind.toLowerCase();
+                    // acctToFind = acctToFind.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
                     String userToFind = scanner.nextLine();
                     userToFind = userToFind.trim();
-                    userToFind = userToFind.toLowerCase();
+                    // userToFind = userToFind.toLowerCase();
                     System.out.println();
 
                     // obtain password they want to find

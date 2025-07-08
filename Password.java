@@ -363,7 +363,7 @@ public class Password {
         String foundPass = null;
 
         // now we go through the linked list until our account and username match or we reach the end
-        trav = rightAccount(trav, acct, pass);
+        trav = rightAccount(trav, acct, user);
 
         // now trav is either null or pointing to the one of the right things, let's do a null check
         if (trav == null) {
