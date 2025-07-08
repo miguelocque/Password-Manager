@@ -543,6 +543,66 @@ public class Password {
         return result;
     }
 
+    // method that calls the method to delete an account;
+    public boolean deleteSpecificAccount(String acct, String user) {
+        return deleteAccount(acct, user);
+    }
+
+    private boolean deleteAccount(String acct, String user) {
+        // get our correct position
+        int position = h1(acct);
+
+        // now a traverse and prev variable
+        Node trav = table[position];
+        Node prev = null;
+
+        while (trav != null) {
+            if (trav != null && trav.account_type.equals(user) && trav.username.equals(user)) {
+                break;
+            }
+            prev = trav;
+            trav = trav.next;
+
+        }
+
+        if (trav == null) {
+            // we didnt find the account to delete in this case
+            return false;
+        }
+
+        // we also want to check if the account we want to delete is the first thing in the list
+        if (prev == null && trav != null) {
+            // just edit the head of the list
+            table[position] = trav.next;
+
+            // and return true
+            return true;
+        }
+
+        // now we do the removal, prev points to the correct previous node, and trav to the node we want to delete
+
+        // so first we check to see if there's anything to the right of trav.
+        if (trav.next != null) {
+            // just point prev to the next node of trav. 
+            prev.next = trav.next;
+
+            // and we can return true here
+            return true;
+        }
+        else { // this means that trav has nothing to the next of it (i.e. the end of the list)
+            
+            // so we can simply edit the prev's next to null and make it the end of the list
+            prev.next = null;
+            
+            // and we return true since we deleted
+            return true;
+
+        }
+
+
+
+    }
+
     // helper method that finds the correct account
     private Node rightAccount(Node trav, String acct, String user) {
         while (trav != null) {
