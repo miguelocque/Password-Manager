@@ -128,6 +128,8 @@ public class PasswordClient {
 
             // ask the user for a selection with an int
             System.out.print("Please select your option from the list: ");
+
+            // TODO error check for a string input instead of an integer
             int input = scanner.nextInt();
             scanner.nextLine(); // this gets rid of the invisible newline
             System.out.println();
@@ -324,6 +326,8 @@ public class PasswordClient {
             // save file process
         }
         // if it's not a yes, there's no need to check, we can just quit.
+        scanner.close();
+
     }
 
     // method that lists the menu options for the user
