@@ -389,15 +389,15 @@ public class Password {
             // insert the password into the temp queue
             passSearch.insert(holder);
 
-            // one more while loop to reset the queue
-            while (!passSearch.isEmpty()) {
-                // get the first item in the NEW queue
-                String movePassBack = passSearch.remove();
+        }
 
-                // place the password back into original queue
-                trav.PassValues.insert(movePassBack);
-            }
+        // one more while loop to reset the queue
+        while (!passSearch.isEmpty()) {
+            // get the first item in the NEW queue
+            String movePassBack = passSearch.remove();
 
+            // place the password back into original queue
+            trav.PassValues.insert(movePassBack);
         }
 
         // first let's check if foundPass is null, which if it is we should print an error message and say not found
