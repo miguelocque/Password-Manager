@@ -19,6 +19,11 @@ public class PasswordClient {
     private static final String FILE_NAME = "vault.check";
     private static final String CHECK_STRING = "check";
 
+    // string objects that will be reused for space optimization for CLI options
+    private static String acct;
+    private static String user;
+    private static String pass;
+
     public static void main(String args[]) {
 
         // instance of a Password class
@@ -132,21 +137,21 @@ public class PasswordClient {
                 case 1:
                     // get the account type
                     System.out.print("What account are you saving? ");
-                    String acct = scanner.nextLine();
+                    acct = scanner.nextLine();
                     acct = acct.trim();
-                    // acct = acct.toLowerCase();
+                    acct = acct.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
-                    String user = scanner.nextLine();
+                    user = scanner.nextLine();
                     user = user.trim();
-                    // user = user.toLowerCase();
+                    user = user.toLowerCase();
                     System.out.println();
 
                     // get the password
                     System.out.print("Please enter your Password (must be at least 8 characters long): ");
-                    String pass = scanner.nextLine();
+                    pass = scanner.nextLine();
 
                     while (pass.length() < 8) {
                         System.out.print("Password must be at least 8 characters long. Try again: ");
@@ -170,34 +175,34 @@ public class PasswordClient {
                 case 2:
                     // get the account type
                     System.out.print("What account are you searching for? ");
-                    String acctToFind = scanner.nextLine();
-                    acctToFind = acctToFind.trim();
-                    // acctToFind = acctToFind.toLowerCase();
+                    acct = scanner.nextLine();
+                    acct = acct.trim();
+                    acct = acct.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
-                    String userToFind = scanner.nextLine();
-                    userToFind = userToFind.trim();
-                    // userToFind = userToFind.toLowerCase();
+                    user = scanner.nextLine();
+                    user = user.trim();
+                    user = user.toLowerCase();
                     System.out.println();
 
                     // obtain password they want to find
                     System.out.print("Please enter the Password you would like to find: ");
-                    String passToFind = scanner.nextLine();
-                    passToFind = passToFind.trim();
+                    pass = scanner.nextLine();
+                    pass = pass.trim();
                     System.out.println();
 
                     // encrypt the typed in password so that we can accurately compare
-                    passToFind = newAccountsWithPasswords.encrypt(passToFind, pin);
+                    pass = newAccountsWithPasswords.encrypt(pass, pin);
 
                     // create a String to show the user their found Password
-                    String found = newAccountsWithPasswords.findPass(acctToFind, userToFind, passToFind);
+                    String found = newAccountsWithPasswords.findPass(acct, user, pass);
 
                     // decrypt the password to display
                     if (found != null) {
                         found = newAccountsWithPasswords.decrypt(found, pin);
-                        System.out.println("Your " + acctToFind + " password was found and exists!");
+                        System.out.println("Your " + acct + " password was found and exists!");
                         System.out.println("This is your password: " + found);
                     }
 
@@ -208,25 +213,25 @@ public class PasswordClient {
                 // "List out All Saved Usernames and Passwords for a Specific Account Type"
                 case 3:
                     // this obtains the account
-                    System.out.println("From what account would you like your passwords? ");
-                    String acctToLookUp = scanner.nextLine();
-                    acctToLookUp = acctToLookUp.trim();
-                    acctToLookUp = acctToLookUp.toLowerCase();
+                    System.out.print("From what account would you like your passwords? ");
+                    acct = scanner.nextLine();
+                    acct = acct.trim();
+                    acct = acct.toLowerCase();
                     System.out.println();
 
                     // obtains the username
-                    System.out.println("What's the username for that account? ");
-                    String userToLookUp = scanner.nextLine();
-                    userToLookUp = userToLookUp.trim();
-                    userToLookUp = userToLookUp.toLowerCase();
+                    System.out.print("What's the username for that account? ");
+                    user = scanner.nextLine();
+                    user = user.trim();
+                    user = user.toLowerCase();
                     System.out.println();
 
                     // now we call the method, with the pin, and if we get null we print an error message
-                    String [] passwordsObtained = newAccountsWithPasswords.retrievePasswords(acctToLookUp, userToLookUp, pin);
+                    String [] passwordsObtained = newAccountsWithPasswords.retrievePasswords(acct, user, pin);
 
                     if (passwordsObtained != null) {
                         // here we have an array that we can print to the user
-                        System.out.println("Here are your passwords for your " + acctToLookUp + " account: " + Arrays.toString(passwordsObtained));
+                        System.out.println("Here are your passwords for your " + acct + " account: " + Arrays.toString(passwordsObtained));
                     }
                     else {
                         System.out.println("Error. Account was not found, thus no passwords were obtained. Try again.");
@@ -240,28 +245,28 @@ public class PasswordClient {
                 case 4:
                     // get the account type
                     System.out.print("What account are deleting from? ");
-                    String acctForDelete = scanner.nextLine();
-                    acctForDelete = acctForDelete.trim();
-                    acctForDelete = acctForDelete.toLowerCase();
+                    acct = scanner.nextLine();
+                    acct = acct.trim();
+                    acct = acct.toLowerCase();
                     System.out.println();
 
                     // get the username
                     System.out.print("Please type your username: ");
-                    String userForDelete = scanner.nextLine();
-                    userForDelete = userForDelete.trim();
-                    userForDelete = userForDelete.toLowerCase();
+                    user = scanner.nextLine();
+                    user = user.trim();
+                    user = user.toLowerCase();
                     System.out.println();
 
                     // obtain password they want to delete
                     System.out.print("Please enter the Password you would like to delete: ");
-                    String passToDelete = scanner.nextLine();
-                    passToDelete = passToDelete.trim();
+                    pass = scanner.nextLine();
+                    pass = pass.trim();
 
                     // encrypt the typed in password so that we can accurately compare
-                    passToDelete = newAccountsWithPasswords.encrypt(passToDelete, pin);
+                    pass = newAccountsWithPasswords.encrypt(pass, pin);
 
                     // create a String to hold the result
-                    String deletedPass = newAccountsWithPasswords.deletePass(acctForDelete, userForDelete, passToDelete);
+                    String deletedPass = newAccountsWithPasswords.deletePass(acct, user, pass);
 
                     if (deletedPass != null) {
                         // this means we obtained the deleted password; let's decrypt it and print it
@@ -271,16 +276,15 @@ public class PasswordClient {
                         System.out.print("You have successfully deleted the password '");
                         System.out.print(deletedPass);
                         System.out.print("' for your ");
-                        System.out.print(acctForDelete);
+                        System.out.print(acct);
                         System.out.print(" account with username ");
-                        System.out.print(userForDelete);
+                        System.out.print(user);
                         System.out.print(".");
                         System.out.println();
                     }
                     else { // being here means that we have a returned null from the method, meaning we didn't delete anything
 
                         // we already printed an error message, so we continue
-                        continue;
                         
                     }
 
