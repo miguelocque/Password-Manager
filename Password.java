@@ -171,7 +171,7 @@ public class Password {
 
                     // first we check if the password already exists in this queue
                     // if we got null back from the searcher method, that means the password does not exist and we can insert
-                    if (findPassInUsername(trav.account_type, trav.username, pswrd) != null) {
+                    if (findPassInUsername(trav.account_type, trav.username, pswrd) == null) {
                         trav.PassValues.insert(pswrd);
 
                         //confirmation message for the insert
