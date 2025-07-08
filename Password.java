@@ -269,8 +269,6 @@ public class Password {
             return null;
         }
 
-        // CHECK TO SEE IF BOTH USER AND ACCOUNT MATCH - ** TODO **
-
         // if we don't go into the if statement, that means we have a match; 
 
         // first we should check to see if the current list is empty, implying that no passwords even exist for this account/username
@@ -373,8 +371,6 @@ public class Password {
             System.out.println("Account/Username not Found. Try again.");
             return null;
         }
-
-        // MUST CHECK TO SEE THAT BOTH MATCH - ** TODO ** 
 
         // getting here assumes we are pointing to the correct account
 
@@ -518,17 +514,13 @@ public class Password {
             String curPass = trav.PassValues.remove();
 
             // add the current pasword to the array
-            passwords.add(curPass);
+            passwords.add(decrypt(curPass, pin));
 
             // and insert the current password into our new holder queue
             holder.insert(curPass);
         }
 
-        // now we've reached the point where our passwords are all in our arraylist, but they
-        // are currently encrypted, so we should go through every element and decrypt it
-        for (String str : passwords) {
-            str = decrypt(str, pin);
-        }
+        // now we've reached the point where our passwords are all in our arraylist, and decrypted
 
         // now we should restore our original queue 
         while (!holder.isEmpty()) {
