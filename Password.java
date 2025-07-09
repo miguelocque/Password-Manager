@@ -79,6 +79,11 @@ public class Password {
             throw new IllegalArgumentException("Credentials cannot be NULL. Please try again");
         }
 
+        // check empty credentials
+        else if (acct.equals("") || usrnm.equals("") || pswrd.equals("")) {
+            throw new IllegalArgumentException("Credentials cannot be empty. Please try again");
+        }
+
         insertPass(acct, usrnm, pswrd);
     }
 
@@ -339,9 +344,14 @@ public class Password {
     }
 
     public String findPass(String acct, String user, String pass) {
-        // null check for invalid credentials
+        // we do an error check before calling the method, to ensure we're saving valid credentials
         if (acct.equals(null) || user.equals(null) || pass.equals(null)) {
             throw new IllegalArgumentException("Credentials cannot be NULL. Please try again");
+        }
+
+        // check empty credentials
+        else if (acct.equals("") || user.equals("") || pass.equals("")) {
+            throw new IllegalArgumentException("Credentials cannot be empty. Please try again");
         }
 
         return findPassInUsername(acct, user, pass);
@@ -474,17 +484,22 @@ public class Password {
 
     // method to retrieve passwords from one username into an array
     public String[] retrievePasswords(String acct, String user, String pin) {
+        // we do an error check before calling the method, to ensure we're saving valid credentials
+        if (acct.equals(null) || user.equals(null)) {
+            throw new IllegalArgumentException("Credentials cannot be NULL. Please try again");
+        }
+
+        // check empty credentials
+        else if (acct.equals("") || user.equals("")) {
+            throw new IllegalArgumentException("Credentials cannot be empty. Please try again");
+        }
+
         // call the private method
         return placePasswordsIntoArray(acct, user, pin);
     }
 
     private String[] placePasswordsIntoArray(String acct, String user, String pin) {
         // private method that will be called by the wrapper method to retrieve credentials
-
-        // error check for null credentials
-        if (acct == null || user == null || user.equals("") || acct.equals("")) {
-            return null;
-        }
         
         // first obtain the correct position on the table to look up the account
         int position = h1(acct);
@@ -545,6 +560,17 @@ public class Password {
 
     // method that calls the method to delete an account;
     public boolean deleteSpecificAccount(String acct, String user) {
+        // we do an error check before calling the method, to ensure we're saving valid credentials
+        if (acct.equals(null) || user.equals(null)) {
+            throw new IllegalArgumentException("Credentials cannot be NULL. Please try again");
+        }
+
+        // check empty credentials
+        else if (acct.equals("") || user.equals("")) {
+            throw new IllegalArgumentException("Credentials cannot be empty. Please try again");
+        }
+
+
         return deleteAccount(acct, user);
     }
 
@@ -575,6 +601,9 @@ public class Password {
             // just edit the head of the list
             table[position] = trav.next;
 
+            // edit numkeys
+            numKeys--;
+
             // and return true
             return true;
         }
@@ -586,6 +615,9 @@ public class Password {
             // just point prev to the next node of trav. 
             prev.next = trav.next;
 
+            // edit numkeys
+            numKeys--;
+
             // and we can return true here
             return true;
         }
@@ -593,6 +625,9 @@ public class Password {
             
             // so we can simply edit the prev's next to null and make it the end of the list
             prev.next = null;
+
+            // edit numkeys
+            numKeys--;
             
             // and we return true since we deleted
             return true;
