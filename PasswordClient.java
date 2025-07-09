@@ -137,7 +137,7 @@ public class PasswordClient {
                     input = scanner.nextInt(); // Try to read an int
                     break; // Exit the loop if successful
                 } catch (InputMismatchException e) {
-                    System.out.println("Invalid input. Please enter a valid integer from the list.");
+                    System.out.print("Invalid input. Please enter a valid integer from the list: ");
                     scanner.nextLine(); // Clear the invalid input
                 }
             }
@@ -309,6 +309,10 @@ public class PasswordClient {
                 // "How Many Accounts have you created?"
                 case 6:
                     System.out.println("You have created " + newAccountsWithPasswords.numAccounts() + " accounts!");
+
+                    // continue with the loop
+                    continue;
+
                     
                 // Delete Account
                 case 7:
@@ -334,6 +338,8 @@ public class PasswordClient {
                     else { // this means no account found
                         System.out.println("No account was located with the given credentials. Try again.");
                     }
+
+                    continue;
 
                 // "Quit"
                 case 8:
