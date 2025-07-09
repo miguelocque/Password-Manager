@@ -557,7 +557,7 @@ public class Password {
         Node prev = null;
 
         while (trav != null) {
-            if (trav != null && trav.account_type.equals(user) && trav.username.equals(user)) {
+            if (trav != null && trav.account_type.equals(acct) && trav.username.equals(user)) {
                 break;
             }
             prev = trav;
