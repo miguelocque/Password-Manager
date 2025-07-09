@@ -9,6 +9,7 @@
  */
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.io.*;
 
@@ -128,9 +129,19 @@ public class PasswordClient {
 
             // ask the user for a selection with an int
             System.out.print("Please select your option from the list: ");
+            int input;
 
-            // TODO error check for a string input instead of an integer
-            int input = scanner.nextInt();
+            // loop until we have an integer
+            while (true) {
+                try {
+                    input = scanner.nextInt(); // Try to read an int
+                    break; // Exit the loop if successful
+                } catch (InputMismatchException e) {
+                    System.out.println("Invalid input. Please enter a valid integer from the list.");
+                    scanner.nextLine(); // Clear the invalid input
+                }
+            }
+
             scanner.nextLine(); // this gets rid of the invisible newline
             System.out.println();
 
@@ -301,6 +312,28 @@ public class PasswordClient {
                     
                 // Delete Account
                 case 7:
+                    // get the account type
+                    System.out.print("What account are you deleting? ");
+                    acct = scanner.nextLine();
+                    acct = acct.trim();
+                    acct = acct.toLowerCase();
+                    System.out.println();
+
+                    // get the username
+                    System.out.print("Please type the username associated with the account: ");
+                    user = scanner.nextLine();
+                    user = user.trim();
+                    user = user.toLowerCase();
+                    System.out.println();
+
+                    // now call the method; if false, state error message, if true, print confirmation
+                    if (newAccountsWithPasswords.deleteSpecificAccount(acct, user)) {
+                        System.out.println("Successfully deleted your " + acct + " account!");
+                    }
+
+                    else { // this means no account found
+                        System.out.println("No account was located with the given credentials. Try again.");
+                    }
 
                 // "Quit"
                 case 8:
