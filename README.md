@@ -1,138 +1,188 @@
-# Password Manager
+# 🔐 Password Manager
 
-A secure command-line password manager built in Java with AES-128 encryption and SHA-256 authentication.
+A secure command-line password manager built in Java featuring AES-128 encryption, SHA-256 authentication, and persistent file storage.
 
-## Features
+## ✨ Features
 
-- **Secure Storage**: Passwords are encrypted using AES-128 encryption with keys derived from SHA-256 hashing
-- **PIN Protection**: 4-digit PIN authentication to access your password vault
+### 🛡️ Security
+- **AES-128 Encryption**: All passwords encrypted using industry-standard AES encryption
+- **SHA-256 Key Derivation**: Secure PIN hashing for encryption key generation
+- **PIN Protection**: 4-digit PIN authentication with encrypted verification
+- **Zero Plaintext Storage**: Passwords never stored in readable format
+
+### 💾 Data Management
+- **Persistent Storage**: Automatically saves and loads encrypted passwords from file
 - **Multiple Passwords**: Store multiple passwords per account/username combination
-- **Hash Table Implementation**: Efficient storage using a custom hash table with linked list collision resolution
-- **Command-Line Interface**: Easy-to-use menu-driven interface
+- **Efficient Storage**: Custom hash table with linked list collision resolution
+- **Data Integrity**: Secure file format maintains encryption throughout storage
 
-## Security Features
+### 🖥️ User Experience
+- **Intuitive CLI**: Clean, menu-driven command-line interface
+- **Account Organization**: Group passwords by account type and username
+- **Flexible Operations**: Add, search, list, delete individual passwords or entire accounts
+- **Session Management**: Seamless loading on startup, optional saving on exit
 
-- **AES-128 Encryption**: All passwords are encrypted before storage
-- **SHA-256 Key Derivation**: PIN is hashed using SHA-256 to create encryption keys
-- **Encrypted PIN Verification**: PIN validation without storing plaintext
-- **In-Memory Processing**: Passwords are decrypted only when needed and not stored in plaintext
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
-
 - Java 8 or higher
-- Java Cryptography Extension (JCE) - included in most modern Java installations
+- Java Cryptography Extension (JCE) - included in modern Java installations
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the repository**:
    ```bash
    git clone <repository-url>
    cd password-manager
    ```
 
-2. Compile the Java files:
+2. **Compile the Java files**:
    ```bash
    javac *.java
    ```
 
-3. Run the application:
+3. **Run the application**:
    ```bash
    java PasswordClient
    ```
 
-### First Time Setup
+### First Run
+On your first run, you'll create a 4-digit PIN that serves as your master key. This PIN encrypts all your passwords and is required for access.
 
-When you first run the application, you'll be prompted to create a 4-digit PIN. This PIN will be used to encrypt and decrypt your passwords.
-
-## Usage
+## 📋 Usage Guide
 
 ### Main Menu Options
 
-1. **Store New Username/Password** - Add a new password for an account
-2. **Search for Existing Password** - Find and display a stored password
-3. **List All Passwords for Account Type** - View all usernames/passwords for a specific account type
-4. **Delete Specific Password** - Remove a password from an account/username
-5. **Erase All Passwords for Account Type** - Delete all data for a specific account type
-6. **Account Count** - Display the number of accounts created
-7. **Delete Account** - Remove an entire account
-8. **Quit** - Exit the application
+| Option | Description |
+|--------|-------------|
+| **1** | Store new username/password for an account |
+| **2** | Search for existing password by account and username |
+| **3** | List all passwords for a specific account/username |
+| **4** | Delete a specific password |
+| **5** | Erase all passwords for an account type |
+| **6** | View total number of accounts created |
+| **7** | Delete an entire account |
+| **8** | Quit application |
 
 ### Example Workflow
 
-1. Run the application and enter your PIN
-2. Choose option 1 to store a new password
-3. Enter account type (e.g., "Gmail")
-4. Enter username (e.g., "john.doe@gmail.com")
-5. Enter password (minimum 8 characters)
-6. Password is encrypted and stored securely
+```
+1. Enter your PIN → Access granted
+2. Choose option 1 → Store new password
+3. Enter "gmail" → Account type
+4. Enter "john.doe@gmail.com" → Username
+5. Enter "MySecurePass123!" → Password (min 8 chars)
+6. Password encrypted and saved ✓
+```
 
-## Architecture
+### File Persistence
+
+- **Automatic Loading**: On startup, previously saved passwords are automatically loaded
+- **Optional Saving**: Choose whether to save your session when exiting
+- **Secure Format**: All data remains encrypted in storage files
+
+## 🏗️ Architecture
 
 ### Core Components
 
-- **Password.java**: Main engine containing the hash table implementation and encryption methods
-- **PasswordClient.java**: Command-line interface and user interaction logic
-- **LLQueue.java**: Linked list queue implementation for storing multiple passwords per account
+```
+Password.java         → Core engine (hash table, encryption, operations)
+PasswordClient.java   → User interface and session management
+LLQueue.java         → Queue implementation for multiple passwords
+```
 
 ### Data Structure
 
-The password manager uses a hash table with linked list collision resolution:
-- Hash table size: 50 buckets
-- Each bucket contains a linked list of account nodes
-- Each node can store multiple passwords using a queue structure
+```
+Hash Table (50 buckets)
+├── Bucket 0: Account Node → Account Node → ...
+├── Bucket 1: Account Node → ...
+├── ...
+└── Bucket 49: Account Node → ...
 
-### Encryption Process
+Each Account Node:
+├── Account Type (e.g., "gmail")
+├── Username (e.g., "user@gmail.com")
+├── Password Queue → [Encrypted Pass 1] → [Encrypted Pass 2] → ...
+└── Next Node Pointer
+```
 
-1. User enters 4-digit PIN
-2. PIN is hashed using SHA-256
-3. First 16 bytes of hash become AES-128 key
-4. Passwords encrypted with AES before storage
-5. Passwords decrypted only when retrieved
+### Security Flow
 
-## File Structure
+```
+PIN Input → SHA-256 Hash → AES-128 Key → Encrypt/Decrypt Passwords
+    ↓
+[Never stored in plaintext] → [File: encrypted verification] → [Memory: encrypted passwords]
+```
+
+## 📁 File Structure
 
 ```
 password-manager/
 ├── Password.java          # Core password manager engine
 ├── PasswordClient.java    # Command-line interface
-├── LLQueue.java          # Queue implementation (dependency)
-└── vault.check           # PIN verification file (created on first run)
+├── LLQueue.java          # Queue implementation
+├── vault.check           # PIN verification (auto-created)
+├── passwords.dat         # Encrypted password storage (auto-created)
+└── README.md             # This file
 ```
 
-## Security Considerations
+## 🔒 Security Features
 
-- **PIN Storage**: PIN is never stored in plaintext; only an encrypted verification string
-- **Password Encryption**: All passwords are encrypted before being stored in memory
-- **Key Derivation**: Uses industry-standard SHA-256 for key derivation
-- **Memory Management**: Passwords are only decrypted when needed for display
+### Encryption Details
+- **Algorithm**: AES-128 in ECB mode
+- **Key Derivation**: SHA-256 hash of PIN, truncated to 128 bits
+- **Data Format**: Base64 encoded encrypted strings
+- **Verification**: PIN verified through encrypted challenge string
 
-## Limitations
+### Security Practices
+- PIN never stored directly
+- Passwords encrypted before any storage operation
+- Decryption only occurs for display purposes
+- Memory cleared after operations (Java GC dependent)
 
-- Passwords are stored in memory only (not persistent across sessions)
-- Maximum of 50 account types due to fixed hash table size
-- No password strength validation beyond minimum length
-- Single-user application (no multi-user support)
+## 🎯 Use Cases
 
-## Contributing
+Perfect for:
+- **Learning**: Understanding encryption, data structures, and Java development
+- **Personal Use**: Secure local password storage without cloud dependencies
+- **Development**: Base for more advanced password management systems
+- **Education**: Demonstrating cryptographic principles and OOP design
 
-This is an educational project demonstrating:
-- Object-oriented programming principles
-- Hash table implementation
-- Cryptographic best practices
-- Command-line interface design
+## ⚠️ Important Notes
 
-## Version
+### Current Limitations
+- **Local Only**: No cloud sync or backup features
+- **Single User**: Designed for individual use
+- **Hash Table Size**: Fixed at 50 buckets (suitable for moderate use)
+- **Platform**: Command-line interface only
 
-- **Version**: 1.0
-- **Author**: Miguel Ocque
-- **Date**: May 2025
+### Security Considerations
+- This is an educational implementation
+- For production use, consider established password managers
+- Regular backups of `passwords.dat` recommended
+- PIN recovery not implemented - forgotten PIN means data loss
 
-## License
+## 🔄 Version History
 
-This project is for educational purposes. Please ensure compliance with local laws and regulations when using encryption software.
+- **Version 1.0** (May 2025)
+  - Initial release with core functionality
+  - AES encryption and hash table implementation
+  - Command-line interface
 
-## Disclaimer
+- **Version 1.1** (Planned)
+  - File persistence
+  - Automatic session loading
+  - Enhanced user experience
 
-This is an educational implementation. For production use, consider established password managers with additional security features like secure storage, backup/sync capabilities, and professional security auditing.
+## 👨‍💻 Author
+
+**Miguel Ocque** - Educational implementation demonstrating secure password management principles
+
+## 📄 License
+
+Educational use. When using encryption software, ensure compliance with local laws and regulations.
+
+---
+
+*🔒 Keep your PIN secure - it's the key to all your passwords!*
