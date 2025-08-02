@@ -8,16 +8,21 @@
  * @since May 2025
  */
 
+// For trimming the hashed key to 16 bytes
+// Lets us turn binary into printable string
 import java.util.*;
-import java.util.Scanner;
 
 // encryption imports
 
 import javax.crypto.Cipher;                  // Core encryption engine
 import javax.crypto.spec.SecretKeySpec;      // Allows us to build a key object from bytes
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.security.MessageDigest;          // Used for SHA-256 hashing of the PIN
-import java.util.Arrays;                     // For trimming the hashed key to 16 bytes
-import java.util.Base64;                     // Lets us turn binary into printable string
 
 
 public class Password {
@@ -655,4 +660,147 @@ public class Password {
         return numKeys;
     }
 
+    // ******************* METHODS BELOW ARE FOR FILE READING *************************
+
+    // Method to save all accounts to a file
+    public boolean saveToFile(String filename, String pin) {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(filename))) {
+            // Write the number of accounts first
+            writer.println(numKeys);
+            
+            // Iterate through the hash table
+            for (int i = 0; i < table.length; i++) {
+                Node current = table[i];
+                
+                // Traverse the linked list at each position
+                while (current != null) {
+                    // Write account type and username
+                    writer.println(current.account_type);
+                    writer.println(current.username);
+                    
+                    // Get all passwords for this account and write them
+                    String[] passwords = retrievePasswordsForSaving(current.account_type, current.username);
+                    writer.println(passwords.length); // Number of passwords
+                    
+                    for (String password : passwords) {
+                        writer.println(password); // Already encrypted
+                    }
+                    
+                    current = current.next;
+                }
+            }
+            
+            System.out.println("Accounts successfully saved to " + filename);
+            return true;
+            
+        } catch (IOException e) {
+            System.err.println("Error saving to file: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Helper method to get passwords without decrypting (for saving)
+    private String[] retrievePasswordsForSaving(String acct, String user) {
+        int position = h1(acct);
+        List<String> passwords = new ArrayList<>();
+        Node trav = table[position];
+        
+        // Find the correct account
+        trav = rightAccount(trav, acct, user);
+        
+        if (trav == null) {
+            return new String[0];
+        }
+        
+        // Get all encrypted passwords
+        LLQueue<String> holder = new LLQueue<>();
+        
+        while (!trav.PassValues.isEmpty()) {
+            String curPass = trav.PassValues.remove();
+            passwords.add(curPass); // Keep encrypted
+            holder.insert(curPass);
+        }
+        
+        // Restore original queue
+        while (!holder.isEmpty()) {
+            trav.PassValues.insert(holder.remove());
+        }
+        
+        return passwords.toArray(new String[0]);
+    }
+
+    // Method to load accounts from a file
+    public boolean loadFromFile(String filename, String pin) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filename))) {
+            String line = reader.readLine();
+            if (line == null) {
+                System.out.println("File is empty or corrupted.");
+                return false;
+            }
+            
+            int totalAccounts = Integer.parseInt(line);
+            System.out.println("Loading " + totalAccounts + " accounts...");
+            
+            for (int i = 0; i < totalAccounts; i++) {
+                // Read account type
+                String accountType = reader.readLine();
+                if (accountType == null) break;
+                
+                // Read username
+                String username = reader.readLine();
+                if (username == null) break;
+                
+                // Read number of passwords
+                String passwordCountStr = reader.readLine();
+                if (passwordCountStr == null) break;
+                int passwordCount = Integer.parseInt(passwordCountStr);
+                
+                // Read and load each password
+                for (int j = 0; j < passwordCount; j++) {
+                    String encryptedPassword = reader.readLine();
+                    if (encryptedPassword == null) break;
+                    
+                    // Load the encrypted password directly (bypass validation)
+                    loadEncryptedPassword(accountType, username, encryptedPassword);
+                }
+            }
+            
+            System.out.println("Accounts successfully loaded from " + filename);
+            return true;
+            
+        } catch (IOException | NumberFormatException e) {
+            System.err.println("Error loading from file: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Helper method to load encrypted passwords directly (bypasses normal validation)
+    private void loadEncryptedPassword(String acct, String username, String encryptedPassword) {
+        int position = h1(acct);
+        
+        if (table[position] == null) {
+            // Create new node
+            Node newAccount = new Node(acct, username, encryptedPassword);
+            table[position] = newAccount;
+            numKeys++;
+        } else {
+            Node trav = table[position];
+            
+            // Look for existing account/username combination
+            while (trav != null && (!trav.username.equals(username) || !trav.account_type.equals(acct))) {
+                trav = trav.next;
+            }
+            
+            if (trav == null) {
+                // Account/username doesn't exist, create new node at front
+                Node newAccount = new Node(acct, username, encryptedPassword);
+                newAccount.next = table[position];
+                table[position] = newAccount;
+                numKeys++;
+            } else {
+                // Account/username exists, add password to existing queue
+                trav.PassValues.insert(encryptedPassword);
+            }
+        }
+    }
 }
