@@ -20,6 +20,9 @@ public class PasswordClient {
     private static final String FILE_NAME = "vault.check";
     private static final String CHECK_STRING = "check";
 
+    // a final check string password file name
+    private static final String PASSWORDS_FILE = "passwords.dat";
+
     // string objects that will be reused for space optimization for CLI options
     private static String acct;
     private static String user;
@@ -33,36 +36,38 @@ public class PasswordClient {
         // a scanner to detect user input
         Scanner scanner = new Scanner(System.in);
 
+        // our user pin variable
+        String userPIN = null;
+
         // we're seeing if the PIN has been created or not
         if (!new File(FILE_NAME).exists()) {
             // getting the new PIN from the user
             System.out.print("Please enter your new 4-Digit PIN: ");
-            String newPin = getValidPIN(scanner);
+            userPIN = getValidPIN(scanner);
 
             // now we can encrypt the check using that pin
-            String encryptedChecker = newAccountsWithPasswords.encrypt(CHECK_STRING, newPin);
+            String encryptedChecker = newAccountsWithPasswords.encrypt(CHECK_STRING, userPIN);
 
             // and we save that string to a file
             writeToFile(FILE_NAME, encryptedChecker);
-
-            // after which we can proceed to the CLI
-            Manager(scanner, newAccountsWithPasswords, newPin);
+            
+            // confirmation message
+            System.out.println("New PIN created successfully!");
 
         }
         else { // if we're here, that means a PIN exists and we must ask the user for it
             System.out.print("Enter your 4 digit PIN to unlock your Password Manager: ");
-            String enteredPin = getValidPIN(scanner);
+            userPIN = getValidPIN(scanner);
 
             // read the encrypted check password from the file 
             String encryptedCheck = readFromFile(FILE_NAME);
 
             // decrypt the string with the entered PIN
-            String decryptCheck = newAccountsWithPasswords.decrypt(encryptedCheck, enteredPin);
+            String decryptCheck = newAccountsWithPasswords.decrypt(encryptedCheck, userPIN);
 
             // and we check to see if the decrypted string matches
             if (CHECK_STRING.equals(decryptCheck)) {
                 System.out.println("Access Granted. Welcome to your Password Manager!");
-                Manager(scanner, newAccountsWithPasswords, enteredPin);
             }
             else { 
                 System.out.println("Incorrect PIN. Try again later.");
@@ -70,6 +75,19 @@ public class PasswordClient {
             }
 
         }
+
+        // Try to load existing passwords if the file exists
+        if (new File(PASSWORDS_FILE).exists()) {
+            System.out.println("Loading existing passwords...");
+            if (newAccountsWithPasswords.loadFromFile(PASSWORDS_FILE, userPIN)) {
+                System.out.println("Previous passwords loaded successfully!");
+            } 
+            else {
+                System.out.println("Warning: Could not load previous passwords. Starting fresh.");
+            }
+        }
+
+        Manager(scanner, newAccountsWithPasswords, userPIN);
 
 
         // once we're out we Quit, so we must close scanner
@@ -358,12 +376,20 @@ public class PasswordClient {
 
         // ask the user if they want to save accounts to a file
         System.out.print("Would you like to Save your Accounts to a File? (y/n) ");
+        String choice = scanner.next().trim().toLowerCase();
 
-        String choice = scanner.next();
-
-        if (choice.equals("y") || choice.equals("Y")) {
+        if (choice.equals("y")) {
             // save file process
+            if (newAccountsWithPasswords.saveToFile(PASSWORDS_FILE, pin)) {
+                System.out.println("Your passwords have been securely saved!");
+            } 
+            else {
+                System.out.println("Error: Could not save passwords to file.");
+            }
+        } else {
+            System.out.println("Passwords not saved. They will be lost when you exit.");
         }
+
         // if it's not a yes, there's no need to check, we can just quit.
         scanner.close();
 
