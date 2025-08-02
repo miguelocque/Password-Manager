@@ -11,7 +11,7 @@ A secure command-line password manager built in Java featuring AES-128 encryptio
 - **Zero Plaintext Storage**: Passwords never stored in readable format
 
 ### 💾 Data Management
-- **Persistent Storage**: Automatically saves and loads encrypted passwords from file
+- **Persistent Storage**: Saves and loads encrypted passwords from file
 - **Multiple Passwords**: Store multiple passwords per account/username combination
 - **Efficient Storage**: Custom hash table with linked list collision resolution
 - **Data Integrity**: Secure file format maintains encryption throughout storage
