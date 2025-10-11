@@ -176,17 +176,6 @@ Perfect for:
 - Regular backups of `passwords.dat` recommended
 - PIN recovery not implemented - forgotten PIN means data loss
 
-## 🔄 Version History
-
-- **Version 1.0** (May 2025)
-  - Initial release with core functionality
-  - AES encryption and hash table implementation
-  - Command-line interface
-
-- **Version 1.1** (Planned)
-  - File persistence
-  - Automatic session loading
-  - Enhanced user experience
 
 ## 👨‍💻 Author
 
