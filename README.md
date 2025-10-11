@@ -2,6 +2,20 @@
 
 A secure command-line password manager built in Java featuring AES-128 encryption, SHA-256 authentication, and persistent file storage.
 
+## ⚠️ Security Disclaimer
+
+**This is an educational project for learning purposes only.**
+
+### Known Security Limitations:
+- **4-digit PIN**: Only 10,000 possible combinations - vulnerable to brute-force attacks (can be cracked in seconds with GPU)
+- **Simple Key Derivation**: Uses SHA-256 without iteration counts or salting - susceptible to rainbow table attacks
+- **ECB Mode**: AES-ECB can leak patterns in encrypted data
+- **No Rate Limiting**: Unlimited PIN attempts possible
+
+**This project is for learning cryptography, data structures, and secure coding practices.**
+
+---
+
 ## ✨ Features
 
 ### 🛡️ Security
@@ -64,16 +78,15 @@ On your first run, you'll create a 4-digit PIN that serves as your master key. T
 | **7** | Delete an entire account |
 | **8** | Quit application |
 
-### Example Workflow
+### Demo
 
-```
-1. Enter your PIN → Access granted
-2. Choose option 1 → Store new password
-3. Enter "gmail" → Account type
-4. Enter "john.doe@gmail.com" → Username
-5. Enter "MySecurePass123!" → Password (min 8 chars)
-6. Password encrypted and saved ✓
-```
+To test the password manager:
+1. Run `java PasswordClient`
+2. Create a new 4-digit PIN
+3. Add some test accounts
+4. The encrypted data will be stored locally in `passwords.dat` and `vault.check`
+
+**Note**: Sample data files are not included in the repository for security and privacy reasons.
 
 ### File Persistence
 
@@ -179,10 +192,18 @@ Perfect for:
 
 **Miguel Ocque** - Educational implementation demonstrating secure password management principles
 
+## 🙏 Acknowledgments
+
+- Boston University CS 112 - Data structures foundation
+- Java Cryptography Extension (JCE) - Encryption APIs
+- Feedback from Red Hat OpenShift AI Dashboard team member
+
 ## 📄 License
 
 Educational use. When using encryption software, ensure compliance with local laws and regulations.
 
 ---
+
+**⚠️ Remember: This is an educational project. For real password management, use established, audited solutions.**
 
 *🔒 Keep your PIN secure - it's the key to all your passwords!*
