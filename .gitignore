@@ -1,0 +1,16 @@
+# User data files - never commit these
+passwords.dat
+vault.check
+*.dat
+*.check
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE Files
+.vscode/
+.idea/
+
+# Compiled files
+*.class
